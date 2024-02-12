@@ -1,12 +1,18 @@
 Rails.application.routes.draw do
 
+
   
   resources :rooms
-  # get 'sessions/newcreatedestroy'
-  get 'home/index'
   get 'my_profile', to: 'profiles#edit', as: 'my_profile'
   patch 'update_profile', to: 'profiles#update', as: 'update_profile'
+  resources :reviews
+  # get 'sessions/newcreatedestroy'
+  get 'home/index'
+  resources :events
+  # # get 'sessions/newcreatedestroy'
+  # get 'home/index'
   resources :users
+
 
   root 'home#index'
   resources :sessions, only: [:new, :create, :destroy]
