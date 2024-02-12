@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   resources :reviews
   # get 'sessions/newcreatedestroy'
   get 'home/index'
+  resources :events
+  # # get 'sessions/newcreatedestroy'
+  # get 'home/index'
   resources :users
+
 
   root 'home#index'
   resources :sessions, only: [:new, :create, :destroy]

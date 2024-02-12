@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2024_02_12_042259) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
-
+  
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
     t.text "feedback"
