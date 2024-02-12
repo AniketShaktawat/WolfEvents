@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :reviews
+  # get 'sessions/newcreatedestroy'
+  get 'home/index'
   resources :events
   # # get 'sessions/newcreatedestroy'
   # get 'home/index'
