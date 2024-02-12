@@ -1,15 +1,14 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
 <p id=”notice”><%= notice %></p>
-<h1>AmazeZone Shopping Portal</h1>
-<p>Purchase items at the snap of your finger</p>
-<%# if current_user %>
-<!--  Logged in as <%#= current_user.name %>.-->
-<!--  <%#= link_to 'View all products', products_path %><br>-->
-<!--  <%#= link_to 'Add credit card', new_credit_card_path %><br>-->
-<!--  <%#= link_to 'View purchase history', transactions_path %><br>-->
-  <%#= link_to "Logout", logout_path %>
-<%# else %>
-<%= link_to "Signup", signup_path %> or
-<%= link_to "Login", login_path %>
-<%# end %>
+<h1>Wolf Events</h1>
+<p>Book Events at the snap of your finger</p>
+<% if current_user %>
+  Logged in as <%= current_user.name %>.
+  <%= link_to 'View all Events', events_path %><br>
+  <!--  <%#= link_to 'Add credit card', new_credit_card_path %><br>-->
+  <!--  <%#= link_to 'View purchase history', transactions_path %><br>-->
+  <%= link_to "Logout", logout_path %>
+<% else %>
+  <%= link_to "Signup", signup_path %> or
+  <%= link_to "Login", login_path %>
+<% end %>
+
