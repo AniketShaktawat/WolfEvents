@@ -8,6 +8,15 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 
+//= require jquery
+//= require jquery-ui
+
+// $(document).on('turbolinks:load', function() {
+//     $('.datepicker').datepicker({
+//         dateFormat: 'yy-mm-dd' // Format as desired
+//     });
+// });
+
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
