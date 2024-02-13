@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Event Tickets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Confirmationnumber</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @event_tickets.each do |event_ticket| %>
+      <tr>
+        <td><%= event_ticket.confirmationNumber %></td>
+        <td><%= link_to 'Show', event_ticket %></td>
+        <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
+        <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Event Ticket', new_event_ticket_path %>

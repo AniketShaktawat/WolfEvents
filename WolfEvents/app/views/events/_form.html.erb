@@ -24,23 +24,34 @@
 
   <div class="field">
     <%= form.label :date %>
-    <%= form.text_field :date, class: "datepicker", type: "date" %>
+    <%= form.text_field :date, class: "datepicker", type: "date", id: 'date' %>
   </div>
 
   <div class="field">
     <%= form.label :startTime %>
-    <%= form.time_field :startTime, class: "timepicker", type: "time" %>
+    <%= form.time_field :startTime, class: "timepicker", type: "time", id: 'start_time' %>
   </div>
 
   <div class="field">
     <%= form.label :endTime %>
-    <%= form.time_field :endTime, class: "timepicker", type: "time" %>
+    <%= form.time_field :endTime, class: "timepicker", type: "time", id: 'end_time' %>
   </div>
 
   <div class="field">
     <%= form.label :ticketPrice %>
     <%= form.text_field :ticketPrice %>
   </div>
+
+  <% if @rooms.nil? %>
+    <p>@rooms is nil</p>
+  <% else %>
+    <div class="field">
+      <%= form.label :room_id %>
+      <%#= form.collection_select :room_id, @rooms, :id, prompt: "Select a Room" %>
+      <%#= form.collection_select :room_id, @rooms, :id, :location, {prompt: "Select a Room"} %>
+      <%= form.collection_select :room_id, [], :id, :location, {prompt: "Select a Room"}, {id: 'event_room_id'} %>
+    </div>
+  <% end %>
 
   <div class="field">
     <%= form.label :seatsLeft %>
@@ -51,3 +62,118 @@
     <%= form.submit %>
   </div>
 <% end %>
+<!--<script>-->
+<!--    // document.addEventListener("turbolinks:load", function() {-->
+<!--    //     $('#date, #start_time, #end_time').on('change', fetchAvailableRooms);-->
+<!--        var dateField = document.getElementById("date");-->
+<!--        var startTimeField = document.getElementById("start_time");-->
+<!--        var endTimeField = document.getElementById("end_time");-->
+<!--        var roomIDSelect = document.getElementById("event_room_id");-->
+
+<!--        // Function to check if all fields are filled and then fetch available rooms-->
+<!--        function fetchAvailableRooms() {-->
+
+<!--            console.log("called the function");-->
+<!--            var date = dateField.value;-->
+<!--            var startTime = startTimeField.value;-->
+<!--            var endTime = endTimeField.value;-->
+
+<!--            // Check if all fields are filled-->
+<!--            if(date && startTime && endTime) {-->
+<!--                $.ajax({-->
+<!--                    url: '/rooms/available', // Ensure this URL matches your route-->
+<!--                    method: 'GET',-->
+<!--                    data: { date: date, start_time: startTime, end_time: endTime },-->
+<!--                    success: function(response) {-->
+<!--                        // Clear existing options and add prompt-->
+<!--                        console.log(response);-->
+<!--                        $(roomIDSelect).empty().append($('<option>', {-->
+<!--                            value: '',-->
+<!--                            text: 'Select a Room'-->
+<!--                        }));-->
+<!--                        // Populate the dropdown with available rooms-->
+<!--                        $.each(response.rooms, function(index, room) {-->
+<!--                            $(roomIDSelect).append($('<option>', {-->
+<!--                                value: room.id,-->
+<!--                                text: room.location // Make sure 'location' matches your Room model attribute-->
+<!--                            }));-->
+<!--                        });-->
+<!--                    }-->
+<!--                });-->
+<!--            }-->
+<!--        }-->
+
+<!--        dateField.addEventListener("input", fetchAvailableRooms)-->
+<!--        startTimeField.addEventListener("input", fetchAvailableRooms)-->
+<!--        endTimeField.addEventListener("input", fetchAvailableRooms)-->
+<!--        // Add event listeners to the form fields-->
+<!--        // [dateField, startTimeField, endTimeField].forEach(field =>-->
+<!--        //     field.addEventListener("input", fetchAvailableRooms));-->
+<!--    // });-->
+<!--</script>-->
+
+<script>
+    // Assuming turbolinks:load is commented out because it's not being used.
+    var dateField = document.getElementById("date");
+    var startTimeField = document.getElementById("start_time");
+    var endTimeField = document.getElementById("end_time");
+    var roomIDSelect = document.getElementById("event_room_id");
+
+    // Function to check if all fields are filled and then fetch available rooms
+    function fetchAvailableRooms() {
+        console.log("called the function");
+        var date = dateField.value;
+        var startTime = startTimeField.value;
+        var endTime = endTimeField.value;
+
+        // Check if all fields are filled
+        if(date && startTime && endTime) {
+            // Build the URL with query parameters
+            console.log("called the function1");
+            var url = new URL('/rooms/available', window.location.origin);
+            // var url = '/rooms/available'
+            console.log("called the function after url");
+            var params = { date: date, start_time: startTime, end_time: endTime };
+            console.log("called the function after paramas");
+            url.search = new URLSearchParams(params).toString();
+            console.log("called the function after url.search");
+
+            fetch(url, {
+                method: 'GET',
+            })
+                .then(response => response.json()) // Parse JSON response
+                .then(function(response) {
+                    // Clear existing options and add prompt
+                    console.log("above responseresponse");
+                    console.log(response);
+                    // Clear the dropdown
+                    while (roomIDSelect.options.length > 0) {
+                        roomIDSelect.remove(0);
+                    }
+                    // Add the 'Select a Room' option
+                    var option = document.createElement("option");
+                    option.value = '';
+                    option.text = 'Select a Room';
+                    roomIDSelect.appendChild(option);
+
+                    // Populate the dropdown with available rooms
+                    response.rooms.forEach(function(room) {
+                        var option = document.createElement("option");
+                        // option.value = room.id;
+                        option.text = room.location; // Make sure 'location' matches your Room model attribute
+                        roomIDSelect.appendChild(option);
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
+    // Add event listeners to the form fields
+    dateField.addEventListener("input", fetchAvailableRooms);
+    startTimeField.addEventListener("input", fetchAvailableRooms);
+    endTimeField.addEventListener("input", fetchAvailableRooms);
+</script>
+
+

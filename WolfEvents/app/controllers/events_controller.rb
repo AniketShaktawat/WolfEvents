@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     @events = Event.all
+    @rooms = Room.all
   end
 
   # GET /events/1 or /events/1.json
@@ -13,12 +14,15 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    @rooms = Room.all
     @event.startTime = Time.current.strftime("%H:%M")
     @event.endTime = Time.current.strftime("%H:%M")
   end
 
   # GET /events/1/edit
   def edit
+    @rooms = Room.all
+    @event = Event.find(params[:id])
   end
 
   # POST /events or /events.json
@@ -54,7 +58,7 @@ class EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to events_url, notice: "Event was successfully destroyed." }
+      format.html { redirect_to events_path, notice: "Event was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -67,6 +71,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :category, :date, :startTime, :endTime, :ticketPrice, :seatsLeft)
+      params.require(:event).permit(:name, :category, :date, :startTime, :endTime, :ticketPrice, :seatsLeft, :room_id)
     end
 end

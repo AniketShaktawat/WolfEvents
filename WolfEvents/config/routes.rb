@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
 
   
+  resources :event_tickets
   resources :rooms
   get 'my_profile', to: 'profiles#edit', as: 'my_profile'
   patch 'update_profile', to: 'profiles#update', as: 'update_profile'
@@ -12,6 +13,11 @@ Rails.application.routes.draw do
   # # get 'sessions/newcreatedestroy'
   # get 'home/index'
   resources :users
+
+  # delete '/events/:id', to: 'events#destroy'
+  get 'rooms/available', to: 'rooms#available'
+
+
 
 
   root 'home#index'

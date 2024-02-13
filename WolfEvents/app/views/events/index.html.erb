@@ -1,5 +1,4 @@
 <p id="notice"><%= notice %></p>
-
 <h1>Events</h1>
 
 
@@ -26,11 +25,12 @@
         <td><%= event.startTime %></td>
         <td><%= event.endTime %></td>
         <td><%= event.ticketPrice %></td>
+        <td><%= event.room_id %></td>
         <td><%= event.seatsLeft %></td>
 <!--        <td><%#= link_to 'Show', event %></td>-->
         <% if current_user.name == "admin" %>
           <td><%= link_to 'Edit', edit_event_path(event) %></td>
-          <td><%= link_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= button_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
     <% end %>

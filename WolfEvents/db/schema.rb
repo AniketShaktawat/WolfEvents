@@ -10,13 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_12_042259) do
-  
-  
-   create_table "rooms", force: :cascade do |t|
-    t.string "location"
-    t.integer "capacity"
-   end
+ActiveRecord::Schema.define(version: 2024_02_13_002734) do
+
+  create_table "event_tickets", force: :cascade do |t|
+    t.string "confirmationNumber"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id", null: false
+    t.integer "event_id", null: false
+    t.index ["event_id"], name: "index_event_tickets_on_event_id"
+    t.index ["user_id"], name: "index_event_tickets_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "name"
@@ -28,11 +32,24 @@ ActiveRecord::Schema.define(version: 2024_02_12_042259) do
     t.integer "seatsLeft"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "room_id", null: false
+    t.index ["room_id"], name: "index_events_on_room_id"
   end
-  
+
   create_table "reviews", force: :cascade do |t|
     t.integer "rating"
     t.text "feedback"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id", null: false
+    t.integer "event_id", null: false
+    t.index ["event_id"], name: "index_reviews_on_event_id"
+    t.index ["user_id"], name: "index_reviews_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "location"
+    t.integer "capacity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -49,4 +66,9 @@ ActiveRecord::Schema.define(version: 2024_02_12_042259) do
     t.boolean "is_admin", default: false
   end
 
+  add_foreign_key "event_tickets", "events"
+  add_foreign_key "event_tickets", "users"
+  add_foreign_key "events", "rooms"
+  add_foreign_key "reviews", "events"
+  add_foreign_key "reviews", "users"
 end

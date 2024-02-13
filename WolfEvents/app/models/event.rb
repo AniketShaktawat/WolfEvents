@@ -1,5 +1,9 @@
 class Event < ApplicationRecord
 
+  has_many :reviews, dependent: :destroy
+  has_many :event_tickets, dependent: :destroy
+  belongs_to :room
+
   validates :name, :category, :date, :startTime, :endTime, :ticketPrice, :seatsLeft, presence: true, on: :create
 
   validate :start_time_before_end_time

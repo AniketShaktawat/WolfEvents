@@ -20,7 +20,7 @@
         <% if current_user.name == "admin" %>
           <td><%= link_to 'Show', review %></td>
           <td><%= link_to 'Edit', edit_review_path(review) %></td>
-          <td><%= link_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= button_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
         </tr>
     <% end %>
@@ -28,3 +28,4 @@
 </table>
 
 <br>
+<%= link_to 'New Review', new_review_path%>
