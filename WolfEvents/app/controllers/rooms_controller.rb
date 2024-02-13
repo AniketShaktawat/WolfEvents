@@ -56,25 +56,48 @@ class RoomsController < ApplicationController
     end
   end
 
+  # def available
+  #   date = params[:date]
+  #   start_time = params[:startTime]
+  #   end_time = params[:endTime]
+  #
+  #   puts(date)
+  #   puts(start_time)
+  #   puts(end_time)
+  #
+  #   @available_rooms = Room.left_joins(:events)
+  #                          .where.not(events: {id: nil, date: date, start_time: start_time..end_time})
+  #                          .or(Room.left_joins(:events).where(events: {id: nil}))
+  #                          .distinct
+  #
+  #   puts @available_rooms
+  #
+  #   render json: {rooms: @available_rooms.select(:id, :location).as_json}
+  # end
   def available
-    puts("balle")
-    date = params[:date]
-    start_time = params[:start_time]
-    end_time = params[:end_time]
+    date = Date.parse(params[:date])
+    startTime = Time.parse(params[:start_time]).strftime('%H:%M')
+    endTime = Time.parse(params[:end_time]).strftime('%H:%M')
 
-    puts(date)
-    puts(start_time)
-    puts(end_time)
+    @rooms = Room.all
+    @available_rooms = Room.all
+    @rooms.each do |room|
+      @events = room.events
+      @events.each do |event|
+        event_startTime = event.startTime.strftime('%H:%M')
+        event_endTime = event.endTime.strftime('%H:%M')
+        if (date == event.date && !(startTime >= event_endTime || endTime <= event_startTime))
+          puts "under if"
+          @available_rooms = @available_rooms.where.not(id: event.room_id)
+        end
 
-    @available_rooms = Room.left_joins(:events)
-                           .where.not(events: {id: nil, date: date, start_time: start_time..end_time})
-                           .or(Room.left_joins(:events).where(events: {id: nil}))
-                           .distinct
-
-    puts @available_rooms
-
-    render json: {rooms: @available_rooms.select(:id, :location).as_json}
+      end
+      puts @events
+    end
+    render json: { rooms: @available_rooms.as_json(only: [:id, :location]) }
   end
+
+
 
 
   private

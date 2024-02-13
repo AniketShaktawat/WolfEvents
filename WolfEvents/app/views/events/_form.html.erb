@@ -159,7 +159,7 @@
                     // Populate the dropdown with available rooms
                     response.rooms.forEach(function(room) {
                         var option = document.createElement("option");
-                        // option.value = room.id;
+                        option.value = room.id;
                         option.text = room.location; // Make sure 'location' matches your Room model attribute
                         roomIDSelect.appendChild(option);
                     });
