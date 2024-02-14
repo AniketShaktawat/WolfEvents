@@ -1,7 +1,6 @@
 <p id="notice"><%= notice %></p>
 <h1>Events</h1>
 
-
 <table>
   <thead>
     <tr>
@@ -28,12 +27,12 @@
         <td><%= event.ticketPrice %></td>
         <td><%= event.room_id %></td>
         <td><%= event.seatsLeft %></td>
-        <td><%= link_to 'Show', event %></td>
+        <% if event.seatsLeft > 0 %>
+          <td><%= link_to 'Book', event %></td>
+        <% end %>
         <% if current_user.name == "admin" %>
           <td><%= link_to 'Edit', edit_event_path(event) %></td>
-<!--          <td><%#= link_to 'Add New Review', new_review_path(event_id: event.id)%></td>-->
           <td><%= button_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <td><%= link_to 'Show', event_path(event) %></td>
         <% end %>
       </tr>
     <% end %>

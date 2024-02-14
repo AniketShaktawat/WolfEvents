@@ -13,6 +13,14 @@ class EventTicketsController < ApplicationController
   # GET /event_tickets/new
   def new
     @event_ticket = EventTicket.new
+    @event_ticket.user = current_user
+    # @event = Event.find_by_id()
+    # @event = Event.find(@review.event_id) # Retrieve the event using the event ID
+    @event = Event.find(params[:event_id])
+    @confirmation_number = SecureRandom.random_number(1_000..9_999)
+    #@event
+    # @room = Room.find_by_id(@event.room_id)
+    #puts @room
   end
 
   # GET /event_tickets/1/edit
@@ -21,10 +29,14 @@ class EventTicketsController < ApplicationController
 
   # POST /event_tickets or /event_tickets.json
   def create
-    @event_ticket = EventTicket.new(event_ticket_params)
+    filtered_params=event_ticket_params.except(:number_of_tickets)
+    @event_ticket = EventTicket.new(filtered_params)
 
     respond_to do |format|
       if @event_ticket.save
+        @event_ticket.update(confirmationNumber: get_confirmation)
+        @event = Event.find(event_ticket_params[:event_id])
+        @event.update(seatsLeft: @event.seatsLeft - event_ticket_params[:number_of_tickets].to_i)
         format.html { redirect_to event_ticket_url(@event_ticket), notice: "Event ticket was successfully created." }
         format.json { render :show, status: :created, location: @event_ticket }
       else
@@ -65,6 +77,10 @@ class EventTicketsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_ticket_params
-      params.require(:event_ticket).permit(:confirmationNumber)
+      params.require(:event_ticket).permit(:confirmationNumber, :event_id, :user_id, :number_of_tickets)
+    end
+
+  def get_confirmation
+    rand(300_000..888_989)
     end
 end

@@ -11,12 +11,70 @@
     </div>
   <% end %>
 
+<!--  <div class="field">-->
+    <%#= form.label :number_of_tickets %>
+    <%#= form.text_field :number_of_tickets, type: :number %>
+<!--  </div>-->
+
   <div class="field">
-    <%= form.label :confirmationNumber %>
-    <%= form.text_field :confirmationNumber %>
+<!--    <strong>Event:</strong> <%#= @event.event_name %>-->
+    <%= form.hidden_field :event_id, value: @event.id%>
   </div>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, value: current_user.id%>
+  </div>
+
+  <div class="field">
+    <%= form.label :number_of_tickets %>
+    <%= form.text_field :number_of_tickets, id: 'number_of_tickets', type: :number, min: 0 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :total_price, 'Total Price' %>
+    <%= form.text_field :total_price, id: 'total_price', readonly: true %>
+  </div>
+
 
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        var ticketPrice = <%#= @event.ticketPrice %>;-->
+<!--        var numberInput = document.getElementById('number_of_tickets');-->
+<!--        var totalPriceInput = document.getElementById('total_price');-->
+
+<!--        numberInput.addEventListener('input', function() {-->
+<!--            var numberOfTickets = parseInt(numberInput.value);-->
+<!--            var totalPrice = ticketPrice * numberOfTickets;-->
+<!--            totalPriceInput.value = isNaN(totalPrice) ? '' : totalPrice.toFixed(2); // Display total price with 2 decimal places-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ticketPrice = <%= @event.ticketPrice %>;
+        var numberInput = document.getElementById('number_of_tickets');
+        var totalPriceInput = document.getElementById('total_price');
+        var seatsLeft = <%= @event.seatsLeft %>;
+
+        numberInput.addEventListener('input', function() {
+            var numberOfTickets = parseInt(numberInput.value);
+            if (numberOfTickets > seatsLeft) {
+                alert('Number of tickets cannot exceed available seats.');
+                numberInput.value = '';
+                numberOfTickets = '';
+                totalPriceInput.value = '';
+            }
+            else {
+                var totalPrice = ticketPrice * numberOfTickets;
+                totalPriceInput.value = isNaN(totalPrice) ? '' : totalPrice.toFixed(2);
+            }
+        });
+    });
+</script>
