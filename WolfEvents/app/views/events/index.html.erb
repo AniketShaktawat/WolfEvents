@@ -1,6 +1,46 @@
 <p id="notice"><%= notice %></p>
 <h1>Events</h1>
 
+<br><br>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  <%= label_tag(:category, "Filter by Category:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
+  <%= label_tag(:date, "Filter by Date:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= date_field_tag(:date, nil, id: 'date') %>
+  <%= label_tag(:min_price, "Min Price:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= number_field_tag(:min_price, nil, id: 'min_price') %>
+  <%= label_tag(:max_price, "Max Price:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= number_field_tag(:max_price, nil, id: 'max_price') %>
+</div>
+
+<br><br>
+
+<!--<div>-->
+  <%#= label_tag(:category, "Filter by Category:") %>
+  <%#= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
+  <%#= label_tag(:date, "Filter by Date:") %>
+  <%#= date_field_tag(:date, nil, id: 'date') %>
+  <%#= label_tag(:min_price, "Min Price:") %>
+  <%#= number_field_tag(:min_price, nil, id: 'min_price') %>
+  <%#= label_tag(:max_price, "Max Price:") %>
+  <%#= number_field_tag(:max_price, nil, id: 'max_price') %>
+
+<!--</div>-->
+
+<!--<div>-->
+  <%#= label_tag(:date, "Filter by Date:") %>
+  <%#= date_field_tag(:date, nil, id: 'date') %>
+<!--</div>-->
+
+<!--<div>-->
+  <%#= label_tag(:min_price, "Min Price:") %>
+  <%#= number_field_tag(:min_price, nil, id: 'min_price') %>
+  <%#= label_tag(:max_price, "Max Price:") %>
+  <%#= number_field_tag(:max_price, nil, id: 'max_price') %>
+<!--</div>-->
+
+
 <table>
   <thead>
     <tr>
@@ -18,7 +58,7 @@
 
   <tbody>
     <% @events.each do |event| %>
-      <tr>
+        <tr class="event-item" data-category="<%= event.category %>" data-date="<%= event.date %>" data-price="<%= event.ticketPrice %>">
         <td><%= event.name %></td>
         <td><%= event.category %></td>
         <td><%= event.date %></td>
@@ -44,4 +84,53 @@
 <% if current_user.name == "admin" %>
   <%= link_to 'New Event', new_event_path %>
 <% end %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        console.log("Inside the JavaScript")
+
+        var categoryFilter = document.getElementById('category');
+        var dateFilter = document.getElementById('date');
+        var minPriceFilter = document.getElementById('min_price');
+        var maxPriceFilter = document.getElementById('max_price');
+
+        // Add event listeners to each filter element
+        function filterEvents() {
+            var category = categoryFilter.value;
+            var date = dateFilter.value;
+            var minPrice = parseFloat(minPriceFilter.value);
+            var maxPrice = parseFloat(maxPriceFilter.value);
+
+            console.log("FilterEvent Function is Called")
+
+            var eventItems = document.querySelectorAll('.event-item');
+
+            eventItems.forEach(function(eventItem) {
+                var eventCategory = eventItem.getAttribute('data-category');
+                var eventDate = eventItem.getAttribute('data-date');
+                var eventPrice = parseFloat(eventItem.getAttribute('data-price'));
+
+                // console.log("Event Category:", eventCategory);
+                // console.log("Event Date:", eventDate);
+                // console.log("Event Price:", eventPrice);
+
+                var categoryMatch = !category || category === eventCategory;
+                var dateMatch = !date || date === eventDate;
+                var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
+
+                eventItem.style.display = (categoryMatch && dateMatch && priceMatch) ? 'block' : 'none';
+            });
+        }
+
+        categoryFilter.addEventListener('input', filterEvents);
+        dateFilter.addEventListener('change', filterEvents);
+        console.log("Date Filter is Called")
+        minPriceFilter.addEventListener('input', filterEvents);
+        console.log("MinPrice Filter is Called")
+        maxPriceFilter.addEventListener('input', filterEvents);
+        console.log("MaxPrice Filter is Called")
+    });
+</script>
+
 

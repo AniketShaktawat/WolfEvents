@@ -62,55 +62,6 @@
     <%= form.submit %>
   </div>
 <% end %>
-<!--<script>-->
-<!--    // document.addEventListener("turbolinks:load", function() {-->
-<!--    //     $('#date, #start_time, #end_time').on('change', fetchAvailableRooms);-->
-<!--        var dateField = document.getElementById("date");-->
-<!--        var startTimeField = document.getElementById("start_time");-->
-<!--        var endTimeField = document.getElementById("end_time");-->
-<!--        var roomIDSelect = document.getElementById("event_room_id");-->
-
-<!--        // Function to check if all fields are filled and then fetch available rooms-->
-<!--        function fetchAvailableRooms() {-->
-
-<!--            console.log("called the function");-->
-<!--            var date = dateField.value;-->
-<!--            var startTime = startTimeField.value;-->
-<!--            var endTime = endTimeField.value;-->
-
-<!--            // Check if all fields are filled-->
-<!--            if(date && startTime && endTime) {-->
-<!--                $.ajax({-->
-<!--                    url: '/rooms/available', // Ensure this URL matches your route-->
-<!--                    method: 'GET',-->
-<!--                    data: { date: date, start_time: startTime, end_time: endTime },-->
-<!--                    success: function(response) {-->
-<!--                        // Clear existing options and add prompt-->
-<!--                        console.log(response);-->
-<!--                        $(roomIDSelect).empty().append($('<option>', {-->
-<!--                            value: '',-->
-<!--                            text: 'Select a Room'-->
-<!--                        }));-->
-<!--                        // Populate the dropdown with available rooms-->
-<!--                        $.each(response.rooms, function(index, room) {-->
-<!--                            $(roomIDSelect).append($('<option>', {-->
-<!--                                value: room.id,-->
-<!--                                text: room.location // Make sure 'location' matches your Room model attribute-->
-<!--                            }));-->
-<!--                        });-->
-<!--                    }-->
-<!--                });-->
-<!--            }-->
-<!--        }-->
-
-<!--        dateField.addEventListener("input", fetchAvailableRooms)-->
-<!--        startTimeField.addEventListener("input", fetchAvailableRooms)-->
-<!--        endTimeField.addEventListener("input", fetchAvailableRooms)-->
-<!--        // Add event listeners to the form fields-->
-<!--        // [dateField, startTimeField, endTimeField].forEach(field =>-->
-<!--        //     field.addEventListener("input", fetchAvailableRooms));-->
-<!--    // });-->
-<!--</script>-->
 
 <script>
     // Assuming turbolinks:load is commented out because it's not being used.
