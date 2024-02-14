@@ -1,18 +1,25 @@
-<p id="notice"><%= notice %></p>
+<h1>Booking History</h1>
 
-<h1>Event Tickets</h1>
-
+<h2>Upcoming Events</h2>
 <table>
   <thead>
     <tr>
-      <th>Confirmationnumber</th>
+      <th>Event Name</th>
+      <th>Event Date</th>
+      <th>Event Start Time</th>
+      <th>Event End Time</th>
+      <th>Confirmation Number</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @event_tickets.each do |event_ticket| %>
+    <% @upcoming_events.each do |event_ticket| %>
       <tr>
+        <td><%= event_ticket.event.name %></td>
+        <td><%= event_ticket.event.date %></td>
+        <td><%= event_ticket.event.startTime %></td>
+        <td><%= event_ticket.event.endTime %></td>
         <td><%= event_ticket.confirmationNumber %></td>
         <td><%= link_to 'Show', event_ticket %></td>
         <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
@@ -24,4 +31,38 @@
 
 <br>
 
-<%= link_to 'New Event Ticket', new_event_ticket_path %>
+<h2>Past Events</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Event Name</th>
+      <th>Event Date</th>
+      <th>Event Start Time</th>
+      <th>Event End Time</th>
+      <th>Confirmation Number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @past_events.each do |event_ticket| %>
+      <tr>
+        <td><%= event_ticket.event.name %></td>
+        <td><%= event_ticket.event.date %></td>
+        <td><%= event_ticket.event.startTime %></td>
+        <td><%= event_ticket.event.endTime %></td>
+        <td><%= event_ticket.confirmationNumber %></td>
+        <td><%= link_to 'Show', event_ticket %></td>
+        <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
+        <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+
+
+

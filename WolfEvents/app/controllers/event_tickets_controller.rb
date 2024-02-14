@@ -3,7 +3,15 @@ class EventTicketsController < ApplicationController
 
   # GET /event_tickets or /event_tickets.json
   def index
-    @event_tickets = EventTicket.all
+   # @event_tickets = EventTicket.all
+    @event_tickets = current_user.event_tickets.includes(:event)
+    current_datetime = DateTime.now
+    @upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date > current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime > current_datetime.strftime('%H:%M:%S')) }
+    #@upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date >= Date.today }
+    @past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime < current_datetime.strftime('%H:%M:%S')) }
+    #@past_events = @event_tickets.select { |event_ticket| event_ticket.event.startTime < Time.zone.now }
+    #@past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < Date.today }
+    
   end
 
   # GET /event_tickets/1 or /event_tickets/1.json
