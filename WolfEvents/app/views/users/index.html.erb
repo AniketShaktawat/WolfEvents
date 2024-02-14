@@ -24,7 +24,7 @@
         <td><%= user.phone_number %></td>
         <td><%= user.address %></td>
         <td><%= user.credit_card %></td>
-        <td><%= link_to 'Show', user %></td>
+<!--        <td><%#= link_to 'Show', user %></td>-->
         <% if current_user.admin? && !user.admin? && user != current_user %> <!-- Allow edit for non-admin users and not the current user -->
           <td><%= link_to 'Edit', edit_user_path(user) %></td>
           <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>

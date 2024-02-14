@@ -12,6 +12,7 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/new
   def new
+    @event = Event.find(params[:event_id])
     @review = Review.new
   end
 
@@ -21,7 +22,13 @@ class ReviewsController < ApplicationController
 
   # POST /reviews or /reviews.json
   def create
+    puts("inside review controller")
     @review = Review.new(review_params)
+    puts("params are these #{review_params}")
+    @review.user = current_user
+    @event = Event.find(@review.event_id) # Retrieve the event using the event ID
+    @review.event = @event
+
 
     respond_to do |format|
       if @review.save
