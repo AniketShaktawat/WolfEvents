@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :require_admin, only: [:destroy]
   before_action :set_user, only: %i[ show edit update destroy ]
 
   # GET /users or /users.json
@@ -18,7 +19,13 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
   end
-
+  
+  def require_admin
+    unless current_user && current_user.admin?
+      flash[:alert] = "You are not authorized to access this page."
+      redirect_to root_path
+    end
+  end
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
@@ -49,11 +56,24 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy
+    @user = User.find(params[:id])
+  
+    if @user == current_user
+      flash[:error] = "Admin cannot delete themselves."
+      redirect_to users_path
+    elsif current_user.admin?
+      @user.destroy
+      flash[:success] = "User deleted successfully."
+      redirect_to users_path
+    else
+      flash[:error] = "You are not authorized to delete this user."
+      redirect_to users_path
+    
+    #@user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+    #respond_to do |format|
+      #format.html { redirect_to users_url, notice: "User was successfully destroyed." }
+      #format.json { head :no_content }
     end
   end
 

@@ -25,8 +25,17 @@
         <td><%= user.address %></td>
         <td><%= user.credit_card %></td>
         <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.admin? && !user.admin? && user != current_user %> <!-- Allow edit for non-admin users and not the current user -->
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% elsif !current_user.admin? && user == current_user %> <!-- Allow edit for regular users only if they are not the current user -->
+          <td><%= link_to 'Edit', edit_user_path(user) %></td>
+          <td></td> <!-- No destroy button for regular users -->
+        <% else %>
+          <td></td> <!-- If user is admin or trying to edit themselves, show empty table cells -->
+          <td></td>
+        <% end %>
+        
       </tr>
     <% end %>
   </tbody>
@@ -34,4 +43,5 @@
 
 <br>
 
-<%= link_to 'New User', new_user_path %>
+<%= link_to 'New User', new_user_path %> </br>
+<%= link_to "Home", root_path %>
