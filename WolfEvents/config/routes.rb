@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   # # get 'sessions/newcreatedestroy'
   # get 'home/index'
   resources :users
+  get '/my_tickets', to: 'event_tickets#index', as: 'my_tickets'
+
 
   # delete '/events/:id', to: 'events#destroy'
   get 'rooms/available', to: 'rooms#available'
