@@ -33,6 +33,8 @@ class EventTicketsController < ApplicationController
 
   # GET /event_tickets/1/edit
   def edit
+    @event_ticket= EventTicket.find(params[:id])
+    @event = @event_ticket.event
   end
 
   # POST /event_tickets or /event_tickets.json
@@ -58,6 +60,8 @@ class EventTicketsController < ApplicationController
   def update
     respond_to do |format|
       if @event_ticket.update(event_ticket_params)
+        @event = Event.find(event_ticket_params[:event_id])
+        @event.update(seatsLeft: @event.seatsLeft - event_ticket_params[:number_of_tickets].to_i)
         format.html { redirect_to event_ticket_url(@event_ticket), notice: "Event ticket was successfully updated." }
         format.json { render :show, status: :ok, location: @event_ticket }
       else
