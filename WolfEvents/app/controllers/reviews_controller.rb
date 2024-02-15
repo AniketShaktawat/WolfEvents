@@ -21,6 +21,8 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1/edit
   def edit
+    @review = Review.find(params[:id])
+    @event = @review.event
   end
 
   # POST /reviews or /reviews.json
@@ -47,9 +49,11 @@ class ReviewsController < ApplicationController
 
   # PATCH/PUT /reviews/1 or /reviews/1.json
   def update
+
+    @events = Event.all
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to reviews_path(@review, eventName: event.name), notice: "Review was successfully updated." }
+        format.html { redirect_to reviews_path(@review, eventName: @events), notice: "Review was successfully updated." }
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -57,6 +61,30 @@ class ReviewsController < ApplicationController
       end
     end
   end
+
+
+
+  def my_reviews
+    puts("inside review controller")
+    # @review = Review.new(review_params)
+    # puts("params are these #{review_params}")
+    # @review.user = current_user
+    # @event = Event.find(@review.event_id) # Retrieve the event using the event ID
+    # @review.event = @event
+
+    @reviews = Review.all
+    @events = Event.all
+    @user = current_user
+
+
+
+  end
+
+
+
+
+
+
 
   # DELETE /reviews/1 or /reviews/1.json
   def destroy

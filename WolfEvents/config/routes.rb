@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   # get 'home/index'
   resources :users
   get '/my_tickets', to: 'event_tickets#index', as: 'my_tickets'
+  get '/my_reviews', to: 'reviews#my_reviews', as: 'my_reviews'
   # get '/reviews', to: 'event_tickets#new', as: 'reviews_path'
 
 

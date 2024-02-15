@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+
+<h1>My Reviews</h1>
+
+<!-- Filter by Event -->
+<%= label_tag(:eventName, "Filter by Event:") %>
+<%= text_field_tag(:eventName, nil, id: 'eventName') %>
+
+<br><br>
+
+<table>
+  <thead>
+  <tr>
+    <th>Event Name</th>
+    <th>Rating</th>
+    <th>Feedback</th>
+    <th colspan="2"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @reviews.each do |review| %>
+    <tr class="review-item" data-eventName="<%= review.event.name %>">
+      <td><%= review.event.name %></td>
+      <td><%= review.rating %></td>
+      <td><%= review.feedback %></td>
+      <% if current_user == review.user %>
+        <td><%= link_to 'Edit', edit_review_path(review) %></td>
+        <td><%= button_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var eventName = document.getElementById('eventName');
+
+        function filterReviews() {
+            var event_name = eventName.value;
+
+            var reviewItems = document.querySelectorAll('.review-item');
+
+            reviewItems.forEach(function(reviewItem) {
+                var event_name1 = reviewItem.getAttribute('data-eventName');
+                var eventMatch = !event_name || event_name === event_name1;
+                reviewItem.style.display = eventMatch ? 'table-row' : 'none';
+            });
+        }
+
+        eventName.addEventListener('input', filterReviews);
+    });
+</script>
+
+
