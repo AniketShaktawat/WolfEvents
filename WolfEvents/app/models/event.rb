@@ -8,6 +8,11 @@ class Event < ApplicationRecord
 
   validate :start_time_before_end_time
 
+  def available_tickets
+    #  seatsLeft represents the available tickets
+    seatsLeft
+  end
+
   private
 
   def start_time_before_end_time
