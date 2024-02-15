@@ -2,9 +2,30 @@
 
 <h1>Reviews</h1>
 
+<br><br>
+
+<!--<div style="display: flex; flex-wrap: wrap; gap: 20px;">-->
+  <%#= label_tag(:eventName, "Filter by Event:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%#= text_field_tag(:eventName, nil, id: 'eventName') %>
+  <%#= label_tag(:email, "Filter by Email:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%#= text_field_tag(:email, nil id: 'email') %>
+<!--</div>-->
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+  <%= label_tag(:eventName, "Filter by Event:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= text_field_tag(:eventName, nil, id: 'eventName') %>
+  <%= label_tag(:email, "Filter by Email:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= text_field_tag(:email, nil, id: 'email') %> <!-- Added comma after nil -->
+</div>
+
+
+<br><br>
+
 <table>
   <thead>
     <tr>
+      <th>User</th>
+      <th>Event Name</th>
       <th>Rating</th>
       <th>Feedback</th>
       <th colspan="3"></th>
@@ -13,7 +34,10 @@
 
   <tbody>
     <% @reviews.each do |review| %>
-      <tr>
+    <tr class="review-item" data-eventName="<%= review.event.name %>" data-email="<%= review.user.email %>">
+<!--        <td><%#= params[:eventName] %></td>-->
+        <td><%= review.user.email %></td>
+        <td><%= review.event.name %></td>
         <td><%= review.rating %></td>
         <td><%= review.feedback %></td>
 
@@ -26,6 +50,43 @@
     <% end %>
   </tbody>
 </table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        console.log("Inside the JavaScript")
+
+        var eventName = document.getElementById('eventName');
+        var email = document.getElementById('email');
+
+
+        function filterReviews() {
+            var event_name = eventName.value;
+            var Email = email.value;
+
+            console.log("FilterReviews Function is Called")
+
+            var reviewItems = document.querySelectorAll('.review-item');
+
+            reviewItems.forEach(function(reviewItem) {
+                var event_name1 = reviewItem.getAttribute('data-eventName');
+                var Email1 = reviewItem.getAttribute('data-email');
+
+
+                var eventMatch = !event_name || event_name === event_name1;
+                var emailMatch = !Email || Email === Email1;
+
+
+                reviewItem.style.display = (eventMatch && emailMatch) ? 'block' : 'none';
+            });
+        }
+
+        eventName.addEventListener('input', filterReviews);
+        email.addEventListener('change', filterReviews);
+    });
+</script>
+
+
 
 <br>
 <%#= link_to 'New Review', new_review_path%>

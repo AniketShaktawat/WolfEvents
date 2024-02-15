@@ -11,7 +11,7 @@
     </div>
   <% end %>
 
-  <%= f.hidden_field :event_id, value: @event.id %>
+  <%= form.hidden_field :event_id, value: @event.id %>
   <div class="field">
     <%= form.label :rating, "Rating (1 - 5)" %>
     <%= form.number_field :rating %>

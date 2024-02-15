@@ -4,6 +4,9 @@ class ReviewsController < ApplicationController
   # GET /reviews or /reviews.json
   def index
     @reviews = Review.all
+    @events = Event.all
+    @users = User.all
+    # @event = Event.find(params[:event_id])
   end
 
   # GET /reviews/1 or /reviews/1.json
@@ -32,7 +35,8 @@ class ReviewsController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        format.html { redirect_to reviews_path, notice: "Review was successfully created." }
+        event = Event.find(@review.event_id)
+        format.html { redirect_to reviews_path(@review, eventName: event.name), notice: "Review was successfully created." }
         format.json { render :show, status: :created, location: @review }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -45,7 +49,7 @@ class ReviewsController < ApplicationController
   def update
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to reviews_path, notice: "Review was successfully updated." }
+        format.html { redirect_to reviews_path(@review, eventName: event.name), notice: "Review was successfully updated." }
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -72,6 +76,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def review_params
-      params.require(:review).permit(:rating, :feedback)
+      params.require(:review).permit(:rating, :feedback, :event_id)
     end
 end
