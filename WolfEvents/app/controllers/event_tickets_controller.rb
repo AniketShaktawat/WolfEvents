@@ -12,10 +12,9 @@ class EventTicketsController < ApplicationController
     @event_tickets = current_user.event_tickets.includes(:event)
     current_datetime = DateTime.now
     @upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date > current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime > current_datetime.strftime('%H:%M:%S')) }
-    #@upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date >= Date.today }
+    
     @past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime < current_datetime.strftime('%H:%M:%S')) }
-    #@past_events = @event_tickets.select { |event_ticket| event_ticket.event.startTime < Time.zone.now }
-    #@past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < Date.today }
+    
     
   end
 
