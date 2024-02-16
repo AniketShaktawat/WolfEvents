@@ -3,8 +3,8 @@ class ProfilesController < ApplicationController
       @user = User.find(current_user.id)
       if current_user.nil?
         redirect_to login_path, notice: "Please Login First."
-      elsif current_user.name!='admin' && current_user.id != params[:id].to_i
-        redirect_to root_path, notice: "You Cannot Edit Other Profiles."
+      # elsif current_user.id != params[:id].to_i
+      #   redirect_to root_path, notice: "You Cannot Edit Other Profiles."
       end
     end
     def update

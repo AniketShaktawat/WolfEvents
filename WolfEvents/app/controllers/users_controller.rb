@@ -23,11 +23,11 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    if current_user.nil?
-      redirect_to login_path, notice: "Please Login First."
-    elsif current_user.name!='admin'
-      redirect_to root_path, notice: "Only Admin can create new users."
-    end
+    # if current_user.nil?
+    #   redirect_to login_path, notice: "Please Login First."
+    # elsif current_user.name!='admin'
+    #   redirect_to root_path, notice: "Only Admin can create new users."
+    # end
     @user = User.new
   end
 
