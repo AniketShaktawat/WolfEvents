@@ -3,20 +3,42 @@ class RoomsController < ApplicationController
 
   # GET /rooms or /rooms.json
   def index
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif
+    if current_user.name!='admin'
+      redirect_to root_path, notice: "Only Admin can Access All the Rooms."
+    end
     @rooms = Room.all
   end
 
   # GET /rooms/1 or /rooms/1.json
   def show
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin'
+      redirect_to my_profile_path, notice: "You Cannot Access Rooms."
+    end
   end
 
   # GET /rooms/new
   def new
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin'
+      redirect_to my_profile_path, notice: "You Cannot Access Rooms."
+    end
+  end
     @room = Room.new
   end
 
   # GET /rooms/1/edit
   def edit
+    if !current_user
+      redirect_to login_path, notice: "Please Login First."
+    elsif !current_user.name=='admin'
+      redirect_to my_profile_path, notice: "You Cannot Edit Rooms."
+    end
   end
 
   # POST /rooms or /rooms.json

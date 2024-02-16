@@ -6,7 +6,7 @@
   <thead>
     <tr>
       <th>Email</th>
-      <th>Password</th>
+<!--      <th>Password</th>-->
       <th>Name</th>
       <th>Phone number</th>
       <th>Address</th>
@@ -17,26 +17,24 @@
 
   <tbody>
     <% @users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td><%= user.password %></td>
-        <td><%= user.name %></td>
-        <td><%= user.phone_number %></td>
-        <td><%= user.address %></td>
-        <td><%= user.credit_card %></td>
-<!--        <td><%#= link_to 'Show', user %></td>-->
-        <% if current_user.admin? && !user.admin? && user != current_user %> <!-- Allow edit for non-admin users and not the current user -->
-          <td><%= link_to 'Edit', edit_user_path(user) %></td>
-          <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% elsif !current_user.admin? && user == current_user %> <!-- Allow edit for regular users only if they are not the current user -->
-          <td><%= link_to 'Edit', edit_user_path(user) %></td>
-          <td></td> <!-- No destroy button for regular users -->
-        <% else %>
-          <td></td> <!-- If user is admin or trying to edit themselves, show empty table cells -->
-          <td></td>
-        <% end %>
-        
-      </tr>
+      <% if !user.admin? %>
+        <tr>
+          <td><%= user.email %></td>
+  <!--        <td><%#= user.password %></td>-->
+          <td><%= user.name %></td>
+          <td><%= user.phone_number %></td>
+          <td><%= user.address %></td>
+          <td><%= user.credit_card %></td>
+  <!--        <td><%#= link_to 'Show', user %></td>-->
+          <% if current_user.admin? && !user.admin? %>
+            <td><%= link_to 'Edit', edit_user_path(user) %></td>
+            <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% else %>
+            <td></td>
+            <td></td>
+          <% end %>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

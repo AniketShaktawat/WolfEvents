@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   
   resources :event_tickets
+  resources :profiles
 
   get 'my_profile', to: 'profiles#edit', as: 'my_profile'
   patch 'update_profile', to: 'profiles#update', as: 'update_profile'
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
   resources :users
   get '/my_tickets', to: 'event_tickets#index', as: 'my_tickets'
   get '/my_reviews', to: 'reviews#my_reviews', as: 'my_reviews'
+  get '/all_bookings', to: 'event_tickets#all_bookings', as: 'all_bookings'
   # get '/reviews', to: 'event_tickets#new', as: 'reviews_path'
 
 

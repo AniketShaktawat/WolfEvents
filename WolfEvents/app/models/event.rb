@@ -2,14 +2,16 @@ class Event < ApplicationRecord
 
   has_many :reviews, dependent: :destroy
   has_many :event_tickets, dependent: :destroy
+  has_many :users
   belongs_to :room
 
   validates :name, :category, :date, :startTime, :endTime, :ticketPrice, :seatsLeft, presence: true, on: :create
+  validates :ticketPrice, numericality: { greater_than_or_equal_to: 0 }
+  validates :seatsLeft, numericality: { greater_than_or_equal_to: 0 }
 
   validate :start_time_before_end_time
 
   def available_tickets
-    #  seatsLeft represents the available tickets
     seatsLeft
   end
 

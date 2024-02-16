@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_14_003610) do
+ActiveRecord::Schema.define(version: 2024_02_16_063447) do
 
   create_table "event_tickets", force: :cascade do |t|
     t.string "confirmationNumber"
@@ -19,7 +19,9 @@ ActiveRecord::Schema.define(version: 2024_02_14_003610) do
     t.integer "user_id", null: false
     t.integer "event_id", null: false
     t.integer "ticket_quantity"
+    t.integer "room_id", null: false
     t.index ["event_id"], name: "index_event_tickets_on_event_id"
+    t.index ["room_id"], name: "index_event_tickets_on_room_id"
     t.index ["user_id"], name: "index_event_tickets_on_user_id"
   end
 
@@ -68,6 +70,7 @@ ActiveRecord::Schema.define(version: 2024_02_14_003610) do
   end
 
   add_foreign_key "event_tickets", "events"
+  add_foreign_key "event_tickets", "rooms"
   add_foreign_key "event_tickets", "users"
   add_foreign_key "events", "rooms"
   add_foreign_key "reviews", "events"

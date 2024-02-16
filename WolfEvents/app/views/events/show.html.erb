@@ -35,8 +35,10 @@
   <%= @event.seatsLeft %>
 </p>
 
-<%= link_to 'Buy Tickets', new_event_ticket_path(event_id: @event.id, ticket_price: @event.ticketPrice), class: 'btn btn-primary' %>&nbsp
-<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Buy Tickets', new_event_ticket_path(event_id: @event.id, ticket_price: @event.ticketPrice, room_id:@event.room_id), class: 'btn btn-primary' %>&nbsp
+<% if current_user.name == "admin" %>
+  <%= link_to 'Edit', edit_event_path(@event) %> |
+<% end %>
 <%= link_to 'Back', events_path %>
 
 

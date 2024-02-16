@@ -4,20 +4,40 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name !='admin'
+      redirect_to root_path, notice: "Only Admin can Access All users."
+    end
     @users = User.all
   end
 
   # GET /users/1 or /users/1.json
   def show
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin' && current_user.id != params[:id].to_i
+      redirect_to my_profile_path, notice: "You Cannot Access Other Profiles."
+    end
   end
 
   # GET /users/new
   def new
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin'
+      redirect_to root_path, notice: "Only Admin can create new users."
+    end
     @user = User.new
   end
 
   # GET /users/1/edit
   def edit
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin' && current_user.id != params[:id].to_i
+      redirect_to root_path, notice: "You Cannot Edit Other Profiles."
+    end
   end
   
   def require_admin
@@ -32,8 +52,15 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
+        format.html do
+          if current_user && current_user.name == "admin"
+            redirect_to users_path, notice: "User was successfully created."
+          else
+            redirect_to login_path, notice: "Please log in."
+          end
+        end
+        # format.html { redirect_to users_path, notice: "User was successfully created." }
+        # format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }

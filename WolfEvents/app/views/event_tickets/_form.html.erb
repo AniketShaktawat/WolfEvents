@@ -27,12 +27,12 @@
 
   <div class="field">
     <%= form.label :number_of_tickets %>
-    <%= form.text_field :number_of_tickets, id: 'number_of_tickets', type: :number, min: 0 %>
+    <%= form.text_field :ticket_quantity, id: 'number_of_tickets', type: :number, min: 0 %>
   </div>
 
   <div class="field">
     <%= form.label :total_price, 'Total Price' %>
-    <%= form.text_field :total_price, id: 'total_price', readonly: true %>
+    <%= form.number_field :total_price, id: 'total_price', readonly: true, disabled: true %>
   </div>
 
 
@@ -67,6 +67,12 @@
             var numberOfTickets = parseInt(numberInput.value);
             if (numberOfTickets > seatsLeft) {
                 alert('Number of tickets cannot exceed available seats.');
+                numberInput.value = '';
+                numberOfTickets = '';
+                totalPriceInput.value = '';
+            }
+            else if (numberOfTickets == 0) {
+                alert('Number of tickets cannot be 0.');
                 numberInput.value = '';
                 numberOfTickets = '';
                 totalPriceInput.value = '';

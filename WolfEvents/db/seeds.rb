@@ -10,7 +10,7 @@ admin = User.create!(
   name: 'admin',
   phone_number: '1234567890',
   address: 'Admin_Address',
-  credit_card: 'Admin_Credit_Card_Number',
+  credit_card: '1234567890123456',
   password_digest: '$2a$12$gXKl/SJwgCj76s38Yv7ErO3hIqZ5.LFE2ES./kRPCFb5emvCaqVDe',
   # password_digest_confirmation: 'admin_password',
   is_admin: true

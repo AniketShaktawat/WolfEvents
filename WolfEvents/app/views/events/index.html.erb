@@ -4,42 +4,26 @@
 <br><br>
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+
+  <%= label_tag(:eventName, "Filter by Event Name:", style: "flex: 0 0 auto; margin-right: 5px;") %>
+  <%= text_field_tag(:eventName, nil, id: 'eventName') %>
   <%= label_tag(:category, "Filter by Category:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
   <%= label_tag(:date, "Filter by Date:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= date_field_tag(:date, nil, id: 'date') %>
   <%= label_tag(:min_price, "Min Price:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= number_field_tag(:min_price, nil, id: 'min_price') %>
+</div>
+
+<br>
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+
   <%= label_tag(:max_price, "Max Price:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= number_field_tag(:max_price, nil, id: 'max_price') %>
 </div>
 
+
 <br><br>
-
-<!--<div>-->
-  <%#= label_tag(:category, "Filter by Category:") %>
-  <%#= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
-  <%#= label_tag(:date, "Filter by Date:") %>
-  <%#= date_field_tag(:date, nil, id: 'date') %>
-  <%#= label_tag(:min_price, "Min Price:") %>
-  <%#= number_field_tag(:min_price, nil, id: 'min_price') %>
-  <%#= label_tag(:max_price, "Max Price:") %>
-  <%#= number_field_tag(:max_price, nil, id: 'max_price') %>
-
-<!--</div>-->
-
-<!--<div>-->
-  <%#= label_tag(:date, "Filter by Date:") %>
-  <%#= date_field_tag(:date, nil, id: 'date') %>
-<!--</div>-->
-
-<!--<div>-->
-  <%#= label_tag(:min_price, "Min Price:") %>
-  <%#= number_field_tag(:min_price, nil, id: 'min_price') %>
-  <%#= label_tag(:max_price, "Max Price:") %>
-  <%#= number_field_tag(:max_price, nil, id: 'max_price') %>
-<!--</div>-->
-
 
 <table>
   <thead>
@@ -59,21 +43,42 @@
   <tbody>
     <% @events.each do |event| %>
         <tr class="event-item" data-category="<%= event.category %>" data-date="<%= event.date %>" data-price="<%= event.ticketPrice %>">
-        <td><%= event.name %></td>
-        <td><%= event.category %></td>
-        <td><%= event.date %></td>
-        <td><%= event.startTime %></td>
-        <td><%= event.endTime %></td>
-        <td><%= event.ticketPrice %></td>
-        <td><%= event.room_id %></td>
-        <td><%= event.seatsLeft %></td>
-        <% if event.seatsLeft > 0 %>
-          <td><%= link_to 'Book', event %></td>
-        <% end %>
-        <% if current_user.name == "admin" %>
-          <td><%= link_to 'Edit', edit_event_path(event) %></td>
-          <td><%= button_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
+          <% if current_user.name == "admin" %>
+                <td><%= event.name %></td>
+                <td><%= event.category %></td>
+                <td><%= event.date %></td>
+                <td><%= event.startTime.strftime("%H:%M") %></td>
+                <td><%= event.endTime.strftime("%H:%M") %></td>
+                <td><%= event.ticketPrice %></td>
+                <td><%= event.room_id %></td>
+                <td><%= event.seatsLeft %></td>
+                <% if event.seatsLeft > 0 && event.date >= Date.today %>
+                    <% if event.date == Date.today && event.endTime <= Time.now %>
+                    <% else %>
+                        <td><%= link_to 'Show', event %></td>
+                    <% end %>
+                <% end %>
+                <% if current_user.name == "admin" %>
+                  <td><%= link_to 'Edit', edit_event_path(event) %></td>
+                  <td><%= button_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <% end %>
+          <% else %>
+                <% if event.seatsLeft > 0 && event.date >= Date.today %>
+                      <% if event.date == Date.today && event.startTime.strftime("%H:%M:%S") <= Time.current.strftime("%H:%M:%S") %>
+                      <% else %>
+                        <td><%= event.name %></td>
+                        <td><%= event.category %></td>
+                        <td><%= event.date %></td>
+                        <td><%= event.startTime.strftime("%H:%M") %></td>
+                        <td><%= event.endTime.strftime("%H:%M") %></td>
+                        <td><%= event.ticketPrice %></td>
+                        <td><%= event.room_id %></td>
+                        <td><%= event.seatsLeft %></td>
+                        <td><%= link_to 'Show', event %></td>
+                      <% end %>
+
+                <% end %>
+          <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -95,6 +100,7 @@
         var dateFilter = document.getElementById('date');
         var minPriceFilter = document.getElementById('min_price');
         var maxPriceFilter = document.getElementById('max_price');
+        var eventNameFilter = document.getElementById('eventName');
 
         // Add event listeners to each filter element
         function filterEvents() {
@@ -102,6 +108,7 @@
             var date = dateFilter.value;
             var minPrice = parseFloat(minPriceFilter.value);
             var maxPrice = parseFloat(maxPriceFilter.value);
+            var eventName = eventNameFilter.value;
 
             console.log("FilterEvent Function is Called")
 
@@ -111,6 +118,8 @@
                 var eventCategory = eventItem.getAttribute('data-category');
                 var eventDate = eventItem.getAttribute('data-date');
                 var eventPrice = parseFloat(eventItem.getAttribute('data-price'));
+                var eventName = eventItem.textContent.trim();
+                // var eventName = eventNameFilter.value;
 
                 // console.log("Event Category:", eventCategory);
                 // console.log("Event Date:", eventDate);
@@ -119,6 +128,7 @@
                 var categoryMatch = !category || category === eventCategory;
                 var dateMatch = !date || date === eventDate;
                 var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
+                var nameMatch = !eventName || eventName.toLowerCase().includes(eventName.toLowerCase());
 
                 eventItem.style.display = (categoryMatch && dateMatch && priceMatch) ? 'block' : 'none';
             });

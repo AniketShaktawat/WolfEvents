@@ -3,6 +3,9 @@ class ReviewsController < ApplicationController
 
   # GET /reviews or /reviews.json
   def index
+    if current_user==nil
+      redirect_to login_path, notice: "Please Login First."
+    end
     @reviews = Review.all
     @events = Event.all
     @users = User.all
@@ -11,10 +14,19 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1 or /reviews/1.json
   def show
+    if current_user==nil
+      redirect_to login_path, notice: "Please Login First."
+    end
   end
 
   # GET /reviews/new
   def new
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    end
+    # if !current_user.name=='admin'
+    #   redirect_to root_path, notice: "Add reviews in My bookings Section"
+    # end
     @event = Event.find(params[:event_id])
     @review = Review.new
   end
@@ -23,6 +35,13 @@ class ReviewsController < ApplicationController
   def edit
     @review = Review.find(params[:id])
     @event = @review.event
+    if !current_user
+      redirect_to login_path, notice: "Please Login First."
+    elsif !current_user.name=='admin' && current_user.id !=@review.user_id
+      redirect_to root_path, notice: "You Cannot Edit Other reviews."
+    end
+    # @review = Review.find(params[:id])
+    # @event = @review.event
   end
 
   # POST /reviews or /reviews.json
@@ -75,8 +94,6 @@ class ReviewsController < ApplicationController
     @reviews = Review.all
     @events = Event.all
     @user = current_user
-
-
 
   end
 

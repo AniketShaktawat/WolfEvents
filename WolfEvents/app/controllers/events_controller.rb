@@ -3,16 +3,29 @@ class EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
+    if current_user==nil
+      redirect_to login_path, notice: "Please Login First."
+    end
+
     @events = Event.all
     @rooms = Room.all
   end
 
   # GET /events/1 or /events/1.json
   def show
+    if current_user==nil
+      redirect_to login_path, notice: "Please Login First."
+    end
   end
 
   # GET /events/new
   def new
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    end
+    if current_user.name!='admin'
+      redirect_to root_path, notice: "Only Admin can create new Events."
+    end
     @event = Event.new
     @rooms = Room.all
     @event.startTime = Time.current.strftime("%H:%M")
@@ -21,6 +34,11 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    if current_user.nil?
+      redirect_to login_path, notice: "Please Login First."
+    elsif current_user.name!='admin'
+      redirect_to root_path, notice: "You Cannot Edit Events."
+    end
     @rooms = Room.all
     @event = Event.find(params[:id])
   end

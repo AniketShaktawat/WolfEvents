@@ -18,12 +18,14 @@
       <tr>
         <td><%= event_ticket.event.name %></td>
         <td><%= event_ticket.event.date %></td>
-        <td><%= event_ticket.event.startTime %></td>
-        <td><%= event_ticket.event.endTime %></td>
+        <td><%= event_ticket.event.startTime.strftime("%H:%M:%S") %></td>
+        <td><%= event_ticket.event.endTime.strftime("%H:%M:%S") %></td>
         <td><%= event_ticket.confirmationNumber %></td>
 <!--        <td><%#= link_to 'Show', event_ticket %></td>-->
-        <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
-        <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.admin? %>
+          <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
+        <% end %>
+        <td><%= button_to 'Cancel Ticket', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -49,13 +51,15 @@
       <tr>
         <td><%= event_ticket.event.name %></td>
         <td><%= event_ticket.event.date %></td>
-        <td><%= event_ticket.event.startTime %></td>
-        <td><%= event_ticket.event.endTime %></td>
+        <td><%= event_ticket.event.startTime.strftime("%H:%M") %></td>
+        <td><%= event_ticket.event.endTime.strftime("%H:%M") %></td>
         <td><%= event_ticket.confirmationNumber %></td>
 <!--        <td><%#= link_to 'Show', event_ticket %></td>-->
         <td><%= link_to "Add Reviews", new_review_path(event_id: event_ticket.event.id) %></td>
-        <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
-        <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.admin? %>
+          <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
+          <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
