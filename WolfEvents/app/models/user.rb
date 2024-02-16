@@ -4,7 +4,8 @@ class User < ApplicationRecord
 
   has_many :reviews, dependent: :destroy
   has_many :event_tickets, dependent: :destroy
-  has_many :events, dependent: :destroy
+  has_many :events
+  # has_many :events, dependent: :destroy
 
   validates :email, :name, :phone_number, :credit_card, presence: true, on: :create
   validates :email, uniqueness: true, on: :create

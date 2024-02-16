@@ -35,9 +35,9 @@ class ReviewsController < ApplicationController
   def edit
     @review = Review.find(params[:id])
     @event = @review.event
-    if !current_user
+    if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
-    elsif !current_user.name=='admin' && current_user.id !=@review.user_id
+    elsif current_user.name!='admin' && current_user.id !=@review.user_id
       redirect_to root_path, notice: "You Cannot Edit Other reviews."
     end
     # @review = Review.find(params[:id])
@@ -57,7 +57,11 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       if @review.save
         event = Event.find(@review.event_id)
-        format.html { redirect_to reviews_path(@review, eventName: event.name), notice: "Review was successfully created." }
+        if current_user.name=='admin'
+          format.html { redirect_to reviews_path(@review, eventName: event.name), notice: "Review was successfully created." }
+        else
+        format.html { redirect_to my_reviews_path(@review, eventName: event.name), notice: "Review was successfully created." }
+        end
         format.json { render :show, status: :created, location: @review }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -72,7 +76,11 @@ class ReviewsController < ApplicationController
     @events = Event.all
     respond_to do |format|
       if @review.update(review_params)
-        format.html { redirect_to reviews_path(@review, eventName: @events), notice: "Review was successfully updated." }
+        if current_user.name=='admin'
+          format.html { redirect_to reviews_path(@review, eventName: @events), notice: "Review was successfully updated." }
+        else
+          format.html { redirect_to my_reviews_path(@review, eventName: @events), notice: "Review was successfully updated." }
+        end
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -108,7 +116,12 @@ class ReviewsController < ApplicationController
     @review.destroy
 
     respond_to do |format|
-      format.html { redirect_to reviews_url, notice: "Review was successfully destroyed." }
+      if current_user.name=='admin'
+        format.html { redirect_to reviews_path, notice: "Review was successfully destroyed." }
+      else
+        format.html { redirect_to my_reviews_path, notice: "Review was successfully destroyed." }
+      end
+
       format.json { head :no_content }
     end
   end

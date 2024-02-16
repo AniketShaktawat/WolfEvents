@@ -21,12 +21,14 @@
   <tbody>
   <% @reviews.each do |review| %>
     <tr class="review-item" data-eventName="<%= review.event.name %>">
-      <td><%= review.event.name %></td>
-      <td><%= review.rating %></td>
-      <td><%= review.feedback %></td>
       <% if current_user == review.user %>
-        <td><%= link_to 'Edit', edit_review_path(review) %></td>
-        <td><%= button_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= review.event.name %></td>
+        <td><%= review.rating %></td>
+        <td><%= review.feedback %></td>
+        <% if current_user.admin? %>
+          <td><%= link_to 'Edit', edit_review_path(review) %></td>
+          <td><%= button_to 'Delete', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       <% end %>
     </tr>
   <% end %>
