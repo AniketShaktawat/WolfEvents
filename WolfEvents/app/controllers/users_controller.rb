@@ -92,6 +92,10 @@ class UsersController < ApplicationController
       @user.destroy
       flash[:success] = "User deleted successfully."
       redirect_to users_path
+    elsif current_user.name!='admin' && current_user.id == params[:id].to_i
+      @user.destroy
+      flash[:success] = "User deleted successfully."
+        redirect_to root_url
     else
       flash[:error] = "You are not authorized to delete this user."
       redirect_to users_path

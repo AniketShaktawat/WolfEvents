@@ -21,13 +21,14 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/new
   def new
+    @event = Event.find(params[:event_id])
     if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
     end
     # if !current_user.name=='admin'
     #   redirect_to root_path, notice: "Add reviews in My bookings Section"
     # end
-    @event = Event.find(params[:event_id])
+
     @review = Review.new
   end
 

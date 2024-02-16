@@ -42,7 +42,7 @@
 
   <tbody>
     <% @events.each do |event| %>
-        <tr class="event-item" data-category="<%= event.category %>" data-date="<%= event.date %>" data-price="<%= event.ticketPrice %>">
+        <tr class="event-item" data-category="<%= event.category %>" data-date="<%= event.date %>" data-price="<%= event.ticketPrice %>" data-eventname="<%= event.name %>">
           <% if current_user.name == "admin" %>
                 <td><%= event.name %></td>
                 <td><%= event.category %></td>
@@ -108,7 +108,14 @@
             var date = dateFilter.value;
             var minPrice = parseFloat(minPriceFilter.value);
             var maxPrice = parseFloat(maxPriceFilter.value);
-            var eventName = eventNameFilter.value;
+            var eventName = eventNameFilter.value.toLowerCase();
+
+            if (!isNaN(minPrice) && !isNaN(maxPrice) && minPrice > maxPrice) {
+                alert('The minimum price should not be greater than the maximum price.');
+                minPriceFilter.value = '';
+                maxPriceFilter.value = '';
+                return; // Stop the function from proceeding further
+            }
 
             console.log("FilterEvent Function is Called")
 
@@ -118,8 +125,8 @@
                 var eventCategory = eventItem.getAttribute('data-category');
                 var eventDate = eventItem.getAttribute('data-date');
                 var eventPrice = parseFloat(eventItem.getAttribute('data-price'));
-                var eventName = eventItem.textContent.trim();
-                // var eventName = eventNameFilter.value;
+                // var eventName = eventItem.textContent.trim();
+                var eventNameData = eventItem.getAttribute('data-eventname').toLowerCase();
 
                 // console.log("Event Category:", eventCategory);
                 // console.log("Event Date:", eventDate);
@@ -128,12 +135,13 @@
                 var categoryMatch = !category || category === eventCategory;
                 var dateMatch = !date || date === eventDate;
                 var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
-                var nameMatch = !eventName || eventName.toLowerCase().includes(eventName.toLowerCase());
+                var nameMatch = !eventName || eventNameData.includes(eventName);
 
-                eventItem.style.display = (categoryMatch && dateMatch && priceMatch) ? 'block' : 'none';
+                eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? 'table-row' : 'none';
             });
         }
 
+        eventNameFilter.addEventListener('input', filterEvents);
         categoryFilter.addEventListener('input', filterEvents);
         dateFilter.addEventListener('change', filterEvents);
         console.log("Date Filter is Called")
@@ -141,6 +149,17 @@
         console.log("MinPrice Filter is Called")
         maxPriceFilter.addEventListener('input', filterEvents);
         console.log("MaxPrice Filter is Called")
+
+        // filterEvents();
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Add event listeners to filter elements
+        //     document.getElementById('category').addEventListener('change', filterEvents);
+        //     document.getElementById('date').addEventListener('change', filterEvents);
+        //     document.getElementById('min_price').addEventListener('input', filterEvents);
+        //     document.getElementById('max_price').addEventListener('input', filterEvents);
+        //     document.getElementById('eventName').addEventListener('input', filterEvents);
+        // });
     });
 </script>
 
