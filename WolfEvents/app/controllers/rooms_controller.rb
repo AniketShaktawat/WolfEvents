@@ -5,8 +5,7 @@ class RoomsController < ApplicationController
   def index
     if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
-    elsif
-    if current_user.name!='admin'
+    elsif current_user.name!='admin'
       redirect_to root_path, notice: "Only Admin can Access All the Rooms."
     end
     @rooms = Room.all
@@ -28,7 +27,6 @@ class RoomsController < ApplicationController
     elsif current_user.name!='admin'
       redirect_to my_profile_path, notice: "You Cannot Access Rooms."
     end
-  end
     @room = Room.new
   end
 
