@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
 
   get 'my_profile', to: 'profiles#edit', as: 'my_profile'
-  get 'delete_profile', to: 'profiles#destroy', as: 'delete_my_profile'
+  delete 'delete_profile', to: 'profiles#destroy', as: 'delete_profile'
   resources :event_tickets
   resources :profiles
 

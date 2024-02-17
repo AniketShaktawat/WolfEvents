@@ -9,6 +9,18 @@ class Event < ApplicationRecord
   validates :ticketPrice, numericality: { greater_than_or_equal_to: 0 }
   validates :seatsLeft, numericality: { greater_than_or_equal_to: 0 }
 
+  validate :seats_left_do_not_exceed_room_capacity
+
+  private
+
+  def seats_left_do_not_exceed_room_capacity
+    return unless room && seatsLeft
+
+    if seatsLeft > room.capacity
+      errors.add(:seatsLeft, "cannot be greater than the room's capacity (#{room.capacity})")
+    end
+  end
+
   validate :start_time_before_end_time
 
   def available_tickets

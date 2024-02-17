@@ -52,8 +52,8 @@
                 <td><%= event.ticketPrice %></td>
                 <td><%= event.room_id %></td>
                 <td><%= event.seatsLeft %></td>
-                <% if event.seatsLeft > 0 && event.date >= Date.today %>
-                    <% if event.date == Date.today && event.endTime <= Time.now %>
+                <% if event.seatsLeft > 0 && event.date >= Time.now.utc.to_date %>
+                    <% if event.date == Time.now.utc.to_date && event.endTime.strftime("%H:%M:%S") <= Time.now.strftime("%H:%M:%S") %>
                     <% else %>
                         <td><%= link_to 'Show', event %></td>
                     <% end %>
@@ -63,8 +63,8 @@
                   <td><%= button_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                 <% end %>
           <% else %>
-                <% if event.seatsLeft > 0 && event.date >= Date.today %>
-                      <% if event.date == Date.today && event.startTime.strftime("%H:%M:%S") <= Time.current.strftime("%H:%M:%S") %>
+                <% if event.seatsLeft > 0 && event.date >= Time.now.utc.to_date %>
+                      <% if event.date == Time.now.utc.to_date && event.startTime.strftime("%H:%M:%S") <= Time.current.strftime("%H:%M:%S") %>
                       <% else %>
                         <td><%= event.name %></td>
                         <td><%= event.category %></td>

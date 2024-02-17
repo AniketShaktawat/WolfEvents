@@ -17,8 +17,11 @@ class ProfilesController < ApplicationController
     end
 
     def destroy
-      puts "OODD"
-      @user.destroy
+
+      if(current_user.name != 'admin')
+        @user = current_user
+        @user.destroy
+      end
       if(current_user.name != 'admin' && @user.name != 'admin')
         puts "OODD111"
         reset_session
