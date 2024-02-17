@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
 
-  
+  get 'my_profile', to: 'profiles#edit', as: 'my_profile'
+  get 'delete_profile', to: 'profiles#destroy', as: 'delete_my_profile'
   resources :event_tickets
   resources :profiles
 
-  get 'my_profile', to: 'profiles#edit', as: 'my_profile'
+
+
   patch 'update_profile', to: 'profiles#update', as: 'update_profile'
   resources :reviews
   # get 'sessions/newcreatedestroy'
