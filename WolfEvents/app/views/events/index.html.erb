@@ -89,7 +89,8 @@
 <% if current_user.name == "admin" %>
   <%= link_to 'New Event', new_event_path %>
 <% end %>
-<%= link_to 'Home page', root_path %>
+<%= link_to 'Home Page', root_path %>
+<%= link_to "Logout", logout_path %>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
