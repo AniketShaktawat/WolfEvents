@@ -1,3 +1,7 @@
+
+<span style="color: red;">NOTE: The time you input for event creation will be recorded in UTC (Coordinated Universal Time) and not in local EST (Eastern Standard Time). Please schedule future events by considering the current UTC time (EST +05:00 hours).<br>For instance, if you intend to schedule an event for 16:30 EST, input 21:30 as the Event start time.</span>
+
+
 <%= form_with(model: event) do |form| %>
   <% if event.errors.any? %>
     <div id="error_explanation">
