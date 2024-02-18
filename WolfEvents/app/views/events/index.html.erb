@@ -40,7 +40,7 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody id="tbody">
     <% @events.each do |event| %>
         <tr class="event-item" data-category="<%= event.category %>" data-date="<%= event.date %>" data-price="<%= event.ticketPrice %>" data-eventname="<%= event.name %>">
           <% if current_user.name == "admin" %>
@@ -53,7 +53,7 @@
                 <td><%= event.room_id %></td>
                 <td><%= event.seatsLeft %></td>
                 <% if event.seatsLeft > 0 && event.date >= Time.now.utc.to_date %>
-                    <% if event.date == Time.now.utc.to_date && event.endTime.strftime("%H:%M:%S") <= Time.now.strftime("%H:%M:%S") %>
+                    <% if event.date == Time.now.utc.to_date && event.startTime.strftime("%H:%M") <= Time.current.strftime("%H:%M") %>
                     <% else %>
                         <td><%= link_to 'Show', event %></td>
                     <% end %>
@@ -64,7 +64,8 @@
                 <% end %>
           <% else %>
                 <% if event.seatsLeft > 0 && event.date >= Time.now.utc.to_date %>
-                      <% if event.date == Time.now.utc.to_date && event.startTime.strftime("%H:%M:%S") <= Time.current.strftime("%H:%M:%S") %>
+<!--                    theek krna h-->
+                      <% if event.date == Time.now.utc.to_date && event.startTime.strftime("%H:%M") <= Time.current.strftime("%H:%M") %>
                       <% else %>
                         <td><%= event.name %></td>
                         <td><%= event.category %></td>
@@ -130,18 +131,29 @@
                 var eventNameData = eventItem.getAttribute('data-eventname').toLowerCase();
 
                 // console.log("Event Category:", eventCategory);
-                // console.log("Event Date:", eventDate);
+                console.log("Event Date:", eventDate);
                 // console.log("Event Price:", eventPrice);
 
                 var categoryMatch = !category || category === eventCategory;
                 var dateMatch = !date || date === eventDate;
                 var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
-                var nameMatch = !eventName || eventNameData.includes(eventName);
+                // var nameMatch = !eventName || eventNameData.includes(eventName);
+                var nameMatch = !eventName || eventNameData.includes(eventName.toLowerCase());
 
                 eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? 'table-row' : 'none';
+                // eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? '' : 'none';
+                // resetFilters();
+
             });
         }
 
+        // function resetFilters() {
+        //     categoryFilter.value = '';
+        //     dateFilter.value = '';
+        //     minPriceFilter.value = '';
+        //     maxPriceFilter.value = '';
+        //     eventNameFilter.value = '';
+        // }
         eventNameFilter.addEventListener('input', filterEvents);
         categoryFilter.addEventListener('input', filterEvents);
         dateFilter.addEventListener('change', filterEvents);
@@ -163,5 +175,96 @@
         // });
     });
 </script>
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+
+<!--        console.log("Inside the JavaScript")-->
+
+<!--        var categoryFilter = document.getElementById('category');-->
+<!--        var dateFilter = document.getElementById('date');-->
+<!--        var minPriceFilter = document.getElementById('min_price');-->
+<!--        var maxPriceFilter = document.getElementById('max_price');-->
+<!--        var eventNameFilter = document.getElementById('eventName');-->
+
+<!--        function updateEventList(events) {-->
+<!--            var eventListContainer = document.getElementById('tbody');-->
+<!--            eventListContainer.innerHTML = '';-->
+
+<!--            events.forEach(event => {-->
+<!--                // Create HTML for each event. Modify as per your event data structure and HTML structure-->
+<!--                var eventItem = document.createElement('div');-->
+<!--                eventItem.className = 'event-item';-->
+<!--                eventItem.innerHTML = `-->
+<!--            <h3>${event.name}</h3>-->
+<!--            <p>Date: ${event.date}</p>-->
+<!--            <p>Category: ${event.category}</p>-->
+<!--            <p>Price: ${event.price}</p>-->
+<!--        `;-->
+<!--                eventListContainer.appendChild(eventItem);-->
+<!--            });-->
+<!--        }-->
+
+
+<!--        // Add event listeners to each filter element-->
+<!--        function filterEvents() {-->
+<!--            var category = categoryFilter.value;-->
+<!--            var date = dateFilter.value;-->
+<!--            var minPrice = parseFloat(minPriceFilter.value);-->
+<!--            var maxPrice = parseFloat(maxPriceFilter.value);-->
+<!--            var eventName = eventNameFilter.value.toLowerCase();-->
+
+<!--            var filterData = {-->
+<!--                category: category,-->
+<!--                date: date,-->
+<!--                min_price: minPrice,-->
+<!--                max_price: maxPrice,-->
+<!--                event_name: eventName-->
+<!--            };-->
+
+<!--            fetch('/events/filter', {-->
+<!--                method: 'POST',-->
+<!--                headers: {-->
+<!--                    'Content-Type': 'application/json',-->
+<!--                    'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content // Rails CSRF token-->
+<!--                },-->
+<!--                body: JSON.stringify(filterData)-->
+<!--            })-->
+<!--                .then(response => response.json())-->
+<!--                .then(data => {-->
+<!--                    updateEventList(data);-->
+<!--                })-->
+<!--                .catch(error => console.error('Error:', error));-->
+<!--        }-->
+
+
+<!--        // function resetFilters() {-->
+<!--        //     categoryFilter.value = '';-->
+<!--        //     dateFilter.value = '';-->
+<!--        //     minPriceFilter.value = '';-->
+<!--        //     maxPriceFilter.value = '';-->
+<!--        //     eventNameFilter.value = '';-->
+<!--        // }-->
+<!--        eventNameFilter.addEventListener('input', filterEvents);-->
+<!--        categoryFilter.addEventListener('input', filterEvents);-->
+<!--        dateFilter.addEventListener('change', filterEvents);-->
+<!--        console.log("Date Filter is Called")-->
+<!--        minPriceFilter.addEventListener('input', filterEvents);-->
+<!--        console.log("MinPrice Filter is Called")-->
+<!--        maxPriceFilter.addEventListener('input', filterEvents);-->
+<!--        console.log("MaxPrice Filter is Called")-->
+
+<!--        // filterEvents();-->
+
+<!--        // document.addEventListener('DOMContentLoaded', function() {-->
+<!--        //     // Add event listeners to filter elements-->
+<!--        //     document.getElementById('category').addEventListener('change', filterEvents);-->
+<!--        //     document.getElementById('date').addEventListener('change', filterEvents);-->
+<!--        //     document.getElementById('min_price').addEventListener('input', filterEvents);-->
+<!--        //     document.getElementById('max_price').addEventListener('input', filterEvents);-->
+<!--        //     document.getElementById('eventName').addEventListener('input', filterEvents);-->
+<!--        // });-->
+<!--    });-->
+<!--</script>-->
 
 

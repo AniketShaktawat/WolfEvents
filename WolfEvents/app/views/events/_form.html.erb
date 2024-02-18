@@ -42,16 +42,12 @@
     <%= form.text_field :ticketPrice %>
   </div>
 
-  <% if @rooms.nil? %>
-    <p>@rooms is nil</p>
-  <% else %>
     <div class="field">
       <%= form.label :room_id %>
       <%#= form.collection_select :room_id, @rooms, :id, prompt: "Select a Room" %>
       <%#= form.collection_select :room_id, @rooms, :id, :location, {prompt: "Select a Room"} %>
       <%= form.collection_select :room_id, [], :id, :location, {prompt: "Select a Room"}, {id: 'event_room_id'} %>
     </div>
-  <% end %>
 
   <div class="field">
     <%= form.label :seatsLeft %>
@@ -111,7 +107,7 @@
                     response.rooms.forEach(function(room) {
                         var option = document.createElement("option");
                         option.value = room.id;
-                        option.text = room.location; // Make sure 'location' matches your Room model attribute
+                        option.text = room.location;
                         roomIDSelect.appendChild(option);
                     });
                 })
@@ -125,6 +121,10 @@
     dateField.addEventListener("input", fetchAvailableRooms);
     startTimeField.addEventListener("input", fetchAvailableRooms);
     endTimeField.addEventListener("input", fetchAvailableRooms);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        fetchAvailableRooms();
+    });
 </script>
 <%= link_to 'Home Page', root_path %>
 <%= link_to "Logout", logout_path %>

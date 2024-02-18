@@ -83,6 +83,22 @@ class EventsController < ApplicationController
     end
   end
 
+  # app/controllers/events_controller.rb
+
+  # def filter
+  #   # Assuming you have an Event model
+  #   @events = Event.all
+  #
+  #   @events = @events.where("category = ?", params[:category]) if params[:category].present?
+  #   @events = @events.where("date = ?", params[:date]) if params[:date].present?
+  #   @events = @events.where("price >= ?", params[:min_price]) if params[:min_price].present?
+  #   @events = @events.where("price <= ?", params[:max_price]) if params[:max_price].present?
+  #   @events = @events.where("lower(name) LIKE ?", "%#{params[:event_name].downcase}%") if params[:event_name].present?
+  #
+  #   render json: @events
+  # end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

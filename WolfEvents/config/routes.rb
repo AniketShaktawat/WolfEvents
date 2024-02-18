@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get '/my_reviews', to: 'reviews#my_reviews', as: 'my_reviews'
   get '/all_bookings', to: 'event_tickets#all_bookings', as: 'all_bookings'
   # get '/reviews', to: 'event_tickets#new', as: 'reviews_path'
+  # post 'events/filter', to: 'events#filter'
 
 
   # delete '/events/:id', to: 'events#destroy'

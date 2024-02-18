@@ -18,8 +18,8 @@
       <tr>
         <td><%= event_ticket.event.name %></td>
         <td><%= event_ticket.event.date %></td>
-        <td><%= event_ticket.event.startTime.strftime("%H:%M:%S") %></td>
-        <td><%= event_ticket.event.endTime.strftime("%H:%M:%S") %></td>
+        <td><%= event_ticket.event.startTime.strftime("%H:%M") %></td>
+        <td><%= event_ticket.event.endTime.strftime("%H:%M") %></td>
         <td><%= event_ticket.confirmationNumber %></td>
 <!--        <td><%#= link_to 'Show', event_ticket %></td>-->
         <% if current_user.admin? %>

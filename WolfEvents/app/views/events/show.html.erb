@@ -17,12 +17,12 @@
 
 <p>
   <strong>Starttime:</strong>
-  <%= @event.startTime %>
+  <%= @event.startTime.strftime("%H:%M") %>
 </p>
 
 <p>
   <strong>Endtime:</strong>
-  <%= @event.endTime %>
+  <%= @event.endTime.strftime("%H:%M") %>
 </p>
 
 <p>

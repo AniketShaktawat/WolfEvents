@@ -11,9 +11,15 @@ class EventTicketsController < ApplicationController
    # @event_tickets = EventTicket.all
     @event_tickets = current_user.event_tickets.includes(:event)
     current_datetime = DateTime.now.utc
-    @upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date > current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime > current_datetime.strftime('%H:%M:%S')) }
+
+    @upcoming_events = @event_tickets.select { |event_ticket| event_ticket.event.date > current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime.strftime('%H:%M') > current_datetime.strftime('%H:%M')) }
     
-    @past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime < current_datetime.strftime('%H:%M:%S')) }
+    @past_events = @event_tickets.select { |event_ticket| event_ticket.event.date < current_datetime.to_date || (event_ticket.event.date == current_datetime.to_date && event_ticket.event.startTime.strftime('%H:%M') < current_datetime.strftime('%H:%M')) }
+    puts current_datetime.to_date
+    puts @past_events
+
+
+
     
     
   end
