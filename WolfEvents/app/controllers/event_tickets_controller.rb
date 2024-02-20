@@ -61,18 +61,30 @@ class EventTicketsController < ApplicationController
 
   # POST /event_tickets or /event_tickets.json
   def create
-    # filtered_params=event_ticket_params.except(:number_of_tickets)
-    # filtered_params=event_ticket_params.except(:room_id)
-    # @event_ticket = EventTicket.new(filtered_params)
+
+    
+    puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     @event = Event.find(event_ticket_params[:event_id].to_i)
-    @event_ticket = EventTicket.new(event_ticket_params)
+    filtered_parameters = event_ticket_params.except(:purchased_for_user_id, :purchase_type)
+    @event_ticket = EventTicket.new(filtered_parameters)
+    puts event_ticket_params[:event_id].to_i
+
+    # if event_ticket_params[:purchase_type] == "Purchase for self"
+    #   @event_ticket.purchased_for_user_id = nil
+    # end
+    # puts event_ticket_params[:purchased_for_user_id]
+    # if (!event_ticket_params[:purchased_for_user_id].nil?)
+    #   @event_ticket.user = event_ticket_params[:purchased_for_user_id].to_i
+    # end
     @event_ticket.update(confirmationNumber: get_confirmation)
     @event_ticket.update(room_id: @event.room_id)
+
+    puts "nnnnnnnnnnnnnnnnnnnnnnnnn"
     respond_to do |format|
       if @event_ticket.save
         @event = Event.find(event_ticket_params[:event_id].to_i)
-        # @event.update(seatsLeft: @event.seatsLeft - event_ticket_params[:number_of_tickets].to_i)
         @event.update(seatsLeft: @event.seatsLeft - event_ticket_params[:ticket_quantity].to_i)
+        puts @event.seatsLeft
         format.html { redirect_to event_ticket_url(@event_ticket), notice: "Event ticket was successfully created." }
         format.json { render :show, status: :created, location: @event_ticket }
       else
@@ -91,7 +103,7 @@ class EventTicketsController < ApplicationController
       if @event_ticket.update(event_ticket_params)
         @event = Event.find(event_ticket_params[:event_id])
         temp =  event_ticket_params[:ticket_quantity].to_i - @event_ticket_old
-        puts "Ballu"
+        puts "b"
         puts temp
         # @event.update(seatsLeft: @event.seatsLeft - event_ticket_params[:number_of_tickets].to_i)
           @event.update(seatsLeft: @event.seatsLeft - temp)
@@ -132,7 +144,7 @@ class EventTicketsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_ticket_params
       # params.require(:event_ticket).permit(:confirmationNumber, :event_id, :user_id, :number_of_tickets)
-      params.require(:event_ticket).permit(:confirmationNumber, :event_id, :user_id, :ticket_quantity, :room_id)
+      params.require(:event_ticket).permit(:confirmationNumber, :event_id, :user_id, :ticket_quantity, :room_id, :purchased_for_user_id, :purchase_type)
     end
 
   def get_confirmation
