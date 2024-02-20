@@ -8,9 +8,11 @@
   <%= label_tag(:eventName, "Filter by Event Name:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= text_field_tag(:eventName, nil, id: 'eventName') %>
   <%= label_tag(:category, "Filter by Category:", style: "flex: 0 0 auto; margin-right: 5px;") %>
-  <%= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
+  <%#= select_tag(:category, options_for_select(['Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
+  <%= select_tag(:category, options_for_select([['Select a Category', ''], 'Concerts', 'Sports', 'Arts & Theatre', 'Miscellaneous/Family – Private']), id: 'category') %>
   <%= label_tag(:date, "Filter by Date:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= date_field_tag(:date, nil, id: 'date') %>
+  <button type="button" id="clear-date" style="height: fit-content;">Clear Date</button>
   <%= label_tag(:min_price, "Min Price:", style: "flex: 0 0 auto; margin-right: 5px;") %>
   <%= number_field_tag(:min_price, nil, id: 'min_price') %>
 </div>
@@ -64,7 +66,6 @@
                 <% end %>
           <% else %>
                 <% if event.seatsLeft > 0 && event.date >= Time.now.utc.to_date %>
-<!--                    theek krna h-->
                       <% if event.date == Time.now.utc.to_date && event.startTime.strftime("%H:%M") <= Time.current.strftime("%H:%M") %>
                       <% else %>
                         <td><%= event.name %></td>
@@ -103,6 +104,7 @@
         var minPriceFilter = document.getElementById('min_price');
         var maxPriceFilter = document.getElementById('max_price');
         var eventNameFilter = document.getElementById('eventName');
+        var clearDateBtn = document.getElementById('clear-date');
 
         // Add event listeners to each filter element
         function filterEvents() {
@@ -147,124 +149,57 @@
             });
         }
 
-        // function resetFilters() {
-        //     categoryFilter.value = '';
-        //     dateFilter.value = '';
-        //     minPriceFilter.value = '';
-        //     maxPriceFilter.value = '';
-        //     eventNameFilter.value = '';
-        // }
-        eventNameFilter.addEventListener('input', filterEvents);
-        categoryFilter.addEventListener('input', filterEvents);
-        dateFilter.addEventListener('change', filterEvents);
-        console.log("Date Filter is Called")
-        minPriceFilter.addEventListener('input', filterEvents);
-        console.log("MinPrice Filter is Called")
-        maxPriceFilter.addEventListener('input', filterEvents);
-        console.log("MaxPrice Filter is Called")
+        // // function resetFilters() {
+        // //     categoryFilter.value = '';
+        // //     dateFilter.value = '';
+        // //     minPriceFilter.value = '';
+        // //     maxPriceFilter.value = '';
+        // //     eventNameFilter.value = '';
+        // // }
+        // eventNameFilter.addEventListener('input', filterEvents);
+        // categoryFilter.addEventListener('input', filterEvents);
+        // dateFilter.addEventListener('change', filterEvents);
+        // console.log("Date Filter is Called")
+        // minPriceFilter.addEventListener('input', filterEvents);
+        // console.log("MinPrice Filter is Called")
+        // maxPriceFilter.addEventListener('input', filterEvents);
+        // console.log("MaxPrice Filter is Called")
+        function resetFilters() {
+            eventNameFilter.value = '';
+            categoryFilter.value = '';
+            dateFilter.value = '';
+            minPriceFilter.value = '';
+            maxPriceFilter.value = '';
+            filterEvents(); // Call filterEvents to update the display
+        }
 
-        // filterEvents();
+// Add the resetFilters call to each event listener
+        eventNameFilter.addEventListener('input', function() {
+            if (!this.value) resetFilters();
+            else filterEvents();
+        });
+        categoryFilter.addEventListener('input', function() {
+            if (!this.value) resetFilters();
+            else filterEvents();
+        });
+        dateFilter.addEventListener('change', function() {
+            if (!this.value) resetFilters();
+            else filterEvents();
+        });
+        minPriceFilter.addEventListener('input', function() {
+            if (!this.value) resetFilters();
+            else filterEvents();
+        });
+        maxPriceFilter.addEventListener('input', function() {
+            if (!this.value) resetFilters();
+            else filterEvents();
+        });
+        clearDateBtn.addEventListener('click', function() {
+            dateFilter.value = '';
+            filterEvents();
+        });
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // Add event listeners to filter elements
-        //     document.getElementById('category').addEventListener('change', filterEvents);
-        //     document.getElementById('date').addEventListener('change', filterEvents);
-        //     document.getElementById('min_price').addEventListener('input', filterEvents);
-        //     document.getElementById('max_price').addEventListener('input', filterEvents);
-        //     document.getElementById('eventName').addEventListener('input', filterEvents);
-        // });
+
     });
 </script>
-
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function() {-->
-
-<!--        console.log("Inside the JavaScript")-->
-
-<!--        var categoryFilter = document.getElementById('category');-->
-<!--        var dateFilter = document.getElementById('date');-->
-<!--        var minPriceFilter = document.getElementById('min_price');-->
-<!--        var maxPriceFilter = document.getElementById('max_price');-->
-<!--        var eventNameFilter = document.getElementById('eventName');-->
-
-<!--        function updateEventList(events) {-->
-<!--            var eventListContainer = document.getElementById('tbody');-->
-<!--            eventListContainer.innerHTML = '';-->
-
-<!--            events.forEach(event => {-->
-<!--                // Create HTML for each event. Modify as per your event data structure and HTML structure-->
-<!--                var eventItem = document.createElement('div');-->
-<!--                eventItem.className = 'event-item';-->
-<!--                eventItem.innerHTML = `-->
-<!--            <h3>${event.name}</h3>-->
-<!--            <p>Date: ${event.date}</p>-->
-<!--            <p>Category: ${event.category}</p>-->
-<!--            <p>Price: ${event.price}</p>-->
-<!--        `;-->
-<!--                eventListContainer.appendChild(eventItem);-->
-<!--            });-->
-<!--        }-->
-
-
-<!--        // Add event listeners to each filter element-->
-<!--        function filterEvents() {-->
-<!--            var category = categoryFilter.value;-->
-<!--            var date = dateFilter.value;-->
-<!--            var minPrice = parseFloat(minPriceFilter.value);-->
-<!--            var maxPrice = parseFloat(maxPriceFilter.value);-->
-<!--            var eventName = eventNameFilter.value.toLowerCase();-->
-
-<!--            var filterData = {-->
-<!--                category: category,-->
-<!--                date: date,-->
-<!--                min_price: minPrice,-->
-<!--                max_price: maxPrice,-->
-<!--                event_name: eventName-->
-<!--            };-->
-
-<!--            fetch('/events/filter', {-->
-<!--                method: 'POST',-->
-<!--                headers: {-->
-<!--                    'Content-Type': 'application/json',-->
-<!--                    'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content // Rails CSRF token-->
-<!--                },-->
-<!--                body: JSON.stringify(filterData)-->
-<!--            })-->
-<!--                .then(response => response.json())-->
-<!--                .then(data => {-->
-<!--                    updateEventList(data);-->
-<!--                })-->
-<!--                .catch(error => console.error('Error:', error));-->
-<!--        }-->
-
-
-<!--        // function resetFilters() {-->
-<!--        //     categoryFilter.value = '';-->
-<!--        //     dateFilter.value = '';-->
-<!--        //     minPriceFilter.value = '';-->
-<!--        //     maxPriceFilter.value = '';-->
-<!--        //     eventNameFilter.value = '';-->
-<!--        // }-->
-<!--        eventNameFilter.addEventListener('input', filterEvents);-->
-<!--        categoryFilter.addEventListener('input', filterEvents);-->
-<!--        dateFilter.addEventListener('change', filterEvents);-->
-<!--        console.log("Date Filter is Called")-->
-<!--        minPriceFilter.addEventListener('input', filterEvents);-->
-<!--        console.log("MinPrice Filter is Called")-->
-<!--        maxPriceFilter.addEventListener('input', filterEvents);-->
-<!--        console.log("MaxPrice Filter is Called")-->
-
-<!--        // filterEvents();-->
-
-<!--        // document.addEventListener('DOMContentLoaded', function() {-->
-<!--        //     // Add event listeners to filter elements-->
-<!--        //     document.getElementById('category').addEventListener('change', filterEvents);-->
-<!--        //     document.getElementById('date').addEventListener('change', filterEvents);-->
-<!--        //     document.getElementById('min_price').addEventListener('input', filterEvents);-->
-<!--        //     document.getElementById('max_price').addEventListener('input', filterEvents);-->
-<!--        //     document.getElementById('eventName').addEventListener('input', filterEvents);-->
-<!--        // });-->
-<!--    });-->
-<!--</script>-->
-
 
