@@ -1,11 +1,9 @@
 <h1> All Bookings</h1>
 
-<!-- app/views/event_tickets/all_bookings.html.erb -->
-<%#= select_tag :event_id, options_from_collection_for_select(Event.all, 'id', 'name'), id: 'event-id' %>
-<!--<button id="filter-button">Filter Bookings</button>-->
-<!--<div id="attendees-list-container">-->
-<!--  The attendees list will be loaded here -->
-<!--</div>-->
+<div style="margin-bottom: 20px;">
+  <%= label_tag(:search_event_name, "Search by Event Name:", style: "margin-right: 5px;") %>
+  <%= text_field_tag(:search_event_name, nil, id: 'search_event_name') %>
+</div>
 
 <h2>Upcoming Events</h2>
 <table>
@@ -43,9 +41,28 @@
 <br>
 
 
-
-
 <%= link_to 'Home Page', root_path %>
 <%= link_to "Logout", logout_path %>
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchEventNameInput = document.getElementById('search_event_name');
+
+        function filterBookings() {
+            var searchValue = searchEventNameInput.value.toLowerCase();
+            var bookingRows = document.querySelectorAll('tbody tr');
+
+            bookingRows.forEach(function(row) {
+                var eventName = row.cells[1].textContent.toLowerCase();
+                if (eventName.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        searchEventNameInput.addEventListener('input', filterBookings);
+    });
+</script>
