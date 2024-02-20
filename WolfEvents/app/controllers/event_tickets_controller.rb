@@ -18,10 +18,6 @@ class EventTicketsController < ApplicationController
     puts current_datetime.to_date
     puts @past_events
 
-
-
-    
-    
   end
 
   # GET /event_tickets/1 or /event_tickets/1.json
