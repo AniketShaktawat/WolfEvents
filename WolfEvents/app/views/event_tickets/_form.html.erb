@@ -21,11 +21,12 @@
   <div class="field">
     <%= form.label :purchased_for_user_id, "Select User" %>
     <%= form.select :purchased_for_user_id, 
-        options_from_collection_for_select(User.where.not(id: current_user.id).where(is_admin: false), :id, :name), 
-        {}, 
+        # options_from_collection_for_select(User.where.not(id: current_user.id).where(is_admin: false), :id, :name),
+        options_from_collection_for_select(User.where.not(id: current_user.id), :id, :name),
+        {prompt: "Select User"},
         id: 'purchased_for_user_select' 
     %>
-  </div>
+</div>
 </div>
 
 

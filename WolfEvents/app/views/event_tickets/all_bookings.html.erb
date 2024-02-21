@@ -9,7 +9,7 @@
 <table>
   <thead>
   <tr>
-    <th>User ID</th>
+    <th>User Name</th>
     <th>Event Name</th>
     <th>Event Date</th>
     <th>Event Start Time</th>
@@ -23,7 +23,8 @@
   <tbody>
   <% @event_tickets.each do |event_ticket| %>
     <tr>
-      <td><%= event_ticket.user.name %></td>
+<!--      <td><%#= event_ticket.user.name %></td>-->
+      <td><%= User.find_by(id: event_ticket.purchased_for_user_id)&.name %></td>
       <td><%= event_ticket.event.name %></td>
       <td><%= event_ticket.event.date %></td>
       <td><%= event_ticket.event.startTime %></td>
