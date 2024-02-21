@@ -23,6 +23,8 @@ The seeds.rb file populates the database with initial data, including an Admin u
     - To register as a new attendee, navigate to the Home page and select "Signup" to create your account. 
     - Utilize the created credentials to log in. 
     - Note: Admin registrations are not permitted. Instead, use the preconfigured admin login details provided.
+    ![Admin Page](admin.png)
+    ![User Page](user.png)
 
 2. **Edit Attendee Profile**
     - Upon logging in, access "My Profile" to modify details or "Delete Profile" to remove the account.
