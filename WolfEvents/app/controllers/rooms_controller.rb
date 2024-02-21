@@ -32,10 +32,10 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1/edit
   def edit
-    if !current_user
+    if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
-    elsif !current_user.name=='admin'
-      redirect_to my_profile_path, notice: "You Cannot Edit Rooms."
+    elsif current_user.name!='admin'
+      redirect_to root_path, notice: "You Cannot Edit Rooms."
     end
   end
 

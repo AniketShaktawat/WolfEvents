@@ -1,5 +1,7 @@
 class EventTicket < ApplicationRecord
 
+  # attr_accessor :purchase_type
+
   belongs_to :user
   belongs_to :event
   belongs_to :room

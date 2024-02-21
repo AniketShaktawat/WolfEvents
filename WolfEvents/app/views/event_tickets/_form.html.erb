@@ -11,6 +11,27 @@
     </div>
   <% end %>
 
+
+  <div class="field">
+  <%= form.label :purchase_type, "Purchase Type" %>
+  <%= form.select :purchase_type, [["Select user for ticket", ""]] + [["Purchase for self", "Purchase for self"], ["Purchase for others", "Purchase for others"]], {}, id: 'purchase_type_select' %>
+</div>
+
+<div id="other_user_field" style="display: none;">
+  <div class="field">
+    <%= form.label :purchased_for_user_id, "Select User" %>
+    <%= form.select :purchased_for_user_id, 
+        # options_from_collection_for_select(User.where.not(id: current_user.id).where(is_admin: false), :id, :name),
+        options_from_collection_for_select(User.where.not(id: current_user.id), :id, :name),
+        {prompt: "Select User"},
+        id: 'purchased_for_user_select' 
+    %>
+</div>
+</div>
+
+
+
+
 <!--  <div class="field">-->
     <%#= form.label :number_of_tickets %>
     <%#= form.text_field :number_of_tickets, type: :number %>
@@ -62,6 +83,25 @@
         var numberInput = document.getElementById('number_of_tickets');
         var totalPriceInput = document.getElementById('total_price');
         var seatsLeft = <%= @event.seatsLeft %>;
+
+        var purchaseTypeSelect = document.getElementById('purchase_type_select');
+        var otherUserField = document.getElementById('other_user_field');
+    
+        purchaseTypeSelect.addEventListener('change', function() {
+          if (purchaseTypeSelect.value === "Purchase for others") {
+            otherUserField.style.display = "block";
+          } else {
+            otherUserField.style.display = "none";
+          }
+        });
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+          if (!purchaseTypeSelect.value) {
+            alert('Please select a purchase type.');
+            event.preventDefault(); // Prevent form submission
+          }
+        });
 
         numberInput.addEventListener('input', function() {
             var numberOfTickets = parseInt(numberInput.value);
