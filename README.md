@@ -18,6 +18,8 @@ The seeds.rb file populates the database with initial data, including an Admin u
 
 ## Navigating the Application
 1. **Registration and Login**
+    
+    ![Home Page](home.png)
     - To register as a new attendee, navigate to the Home page and select "Signup" to create your account. 
     - Utilize the created credentials to log in. 
     - Note: Admin registrations are not permitted. Instead, use the preconfigured admin login details provided.
