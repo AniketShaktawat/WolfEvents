@@ -58,3 +58,15 @@ The seeds.rb file populates the database with initial data, including an Admin u
 
 10. **Logout**
     - Logout from your profile using the logout button on the Home page.
+
+## Bonus Credits
+
+11. **List attendee name when filtered by event name**
+    - Once logged in as an admin, there's a feature to "Search Attendees by Event Name". Admins can filter attendees by entering the event name in the           search box. 
+    - Alternatively, they can view all bookings under "All Bookings" to see the complete list of attendees for any event.
+12. **Buy Tickets for Others** 
+    - Navigate to the "Events" page, select an event, and click "Buy Ticket."
+    - Choose between "Purchase for Self" or "Purchase for Others", where booking for others will be reflected in their history.
+
+
+ 
