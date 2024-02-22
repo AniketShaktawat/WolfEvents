@@ -26,8 +26,8 @@
       <td><%= User.find_by(id: event_ticket.purchased_for_user_id)&.name %></td>
       <td><%= event_ticket.event.name %></td>
       <td><%= event_ticket.event.date %></td>
-      <td><%= event_ticket.event.startTime %></td>
-      <td><%= event_ticket.event.endTime %></td>
+      <td><%= event_ticket.event.startTime.strftime("%H:%M") %></td>
+      <td><%= event_ticket.event.endTime.strftime("%H:%M") %></td>
       <td><%= event_ticket.confirmationNumber %></td>
       <td><%= event_ticket.ticket_quantity %></td>
       <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
