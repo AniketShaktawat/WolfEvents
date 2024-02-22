@@ -48,6 +48,7 @@ The seeds.rb file populates the database with initial data, including an Admin u
     - Access "My Bookings" to review attended events. 
     - Users can write one review per event, with an option to edit.
     - Admin can edit or delete user reviews.
+    - To test the review functionality, an event needs to be created on present date and future UTC time and book the ticket. We need to wait till the event gets over and goes into past attended events to write a review.
 
 8. **List Reviews Written by You**
     - Use the "My Reviews" button on the Home page to list reviews written by you.
