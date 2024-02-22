@@ -1,4 +1,3 @@
-# spec/controllers/users_controller_spec.rb
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
@@ -25,12 +24,37 @@ RSpec.describe UsersController, type: :controller do
   }
 
   describe "GET #index" do
-    it "returns a success response" do
-      user = User.create! valid_attributes
-      get :index
-      expect(response).to_not be_successful
+    context "when user is not logged in" do
+      it "redirects to login page" do
+        get :index
+        expect(response).to redirect_to(login_path)
+      end
     end
   end
 
+  describe "GET #show" do
+    context "when user is not logged in" do
+      it "redirects to login page" do
+        user = create(:user)
+        get :show, params: { id: user.to_param }
+        expect(response).to redirect_to(login_path)
+      end
+    end
+  end
+
+    describe "GET #index" do
+      it "returns a success response" do
+        user = User.create! valid_attributes
+        get :index
+        expect(response).to_not be_successful
+      end
+    end
+
+  describe "GET #new" do
+    it "returns a success response" do
+      get :new
+      expect(response).to be_successful
+    end
+  end
 
 end
