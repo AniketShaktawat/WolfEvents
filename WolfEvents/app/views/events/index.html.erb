@@ -140,7 +140,7 @@
                 var dateMatch = !date || date === eventDate;
                 var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
                 // var nameMatch = !eventName || eventNameData.includes(eventName);
-                var nameMatch = !eventName || eventNameData.includes(eventName.toLowerCase());
+                var nameMatch = !eventName || eventNameData.startsWith(eventName.toLowerCase());
 
                 eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? 'table-row' : 'none';
                 // eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? '' : 'none';
@@ -149,21 +149,6 @@
             });
         }
 
-        // // function resetFilters() {
-        // //     categoryFilter.value = '';
-        // //     dateFilter.value = '';
-        // //     minPriceFilter.value = '';
-        // //     maxPriceFilter.value = '';
-        // //     eventNameFilter.value = '';
-        // // }
-        // eventNameFilter.addEventListener('input', filterEvents);
-        // categoryFilter.addEventListener('input', filterEvents);
-        // dateFilter.addEventListener('change', filterEvents);
-        // console.log("Date Filter is Called")
-        // minPriceFilter.addEventListener('input', filterEvents);
-        // console.log("MinPrice Filter is Called")
-        // maxPriceFilter.addEventListener('input', filterEvents);
-        // console.log("MaxPrice Filter is Called")
         function resetFilters() {
             eventNameFilter.value = '';
             categoryFilter.value = '';
@@ -173,7 +158,6 @@
             filterEvents(); // Call filterEvents to update the display
         }
 
-// Add the resetFilters call to each event listener
         eventNameFilter.addEventListener('input', function() {
             if (!this.value) resetFilters();
             else filterEvents();

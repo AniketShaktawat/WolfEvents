@@ -1,8 +1,8 @@
 <h1> All Bookings</h1>
 
 <div style="margin-bottom: 20px;">
-  <%= label_tag(:search_event_name, "Search by Event Name:", style: "margin-right: 5px;") %>
-  <%= text_field_tag(:search_event_name, nil, id: 'search_event_name') %>
+  <%= label_tag(:eventName, "Search by Event Name:", style: "margin-right: 5px;") %>
+  <%= text_field_tag(:eventName, nil, id: 'eventName') %>
 </div>
 
 <h2>Upcoming Events</h2>
@@ -22,8 +22,7 @@
 
   <tbody>
   <% @event_tickets.each do |event_ticket| %>
-    <tr>
-<!--      <td><%#= event_ticket.user.name %></td>-->
+    <tr class="event-item" data-eventname="<%= event_ticket.event.name %>">
       <td><%= User.find_by(id: event_ticket.purchased_for_user_id)&.name %></td>
       <td><%= event_ticket.event.name %></td>
       <td><%= event_ticket.event.date %></td>
@@ -31,7 +30,6 @@
       <td><%= event_ticket.event.endTime %></td>
       <td><%= event_ticket.confirmationNumber %></td>
       <td><%= event_ticket.ticket_quantity %></td>
-      <!--        <td><%#= link_to 'Show', event_ticket %></td>-->
       <td><%= link_to 'Edit', edit_event_ticket_path(event_ticket) %></td>
       <td><%= button_to 'Destroy', event_ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
@@ -45,25 +43,34 @@
 <%= link_to 'Home Page', root_path %>
 <%= link_to "Logout", logout_path %>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var searchEventNameInput = document.getElementById('search_event_name');
+
+        console.log("Inside the JavaScript")
+        var eventNameFilter = document.getElementById('eventName');
 
         function filterBookings() {
-            var searchValue = searchEventNameInput.value.toLowerCase();
-            var bookingRows = document.querySelectorAll('tbody tr');
 
-            bookingRows.forEach(function(row) {
-                var eventName = row.cells[1].textContent.toLowerCase();
-                if (eventName.includes(searchValue)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+            var eventName = eventNameFilter.value.toLowerCase();
+            var eventItems = document.querySelectorAll('.event-item');
+            console.log("Filter Booking Called")
+
+            eventItems.forEach(function(eventItem) {
+                var eventNameData = eventItem.getAttribute('data-eventname').toLowerCase();
+                var nameMatch = !eventName || eventNameData.startsWith(eventName.toLowerCase());
+                eventItem.style.display = (nameMatch) ? 'table-row' : 'none';
             });
         }
 
-        searchEventNameInput.addEventListener('input', filterBookings);
+        function resetFilters() {
+            eventNameFilter.value = '';
+            filterBookings();
+        }
+
+        eventNameFilter.addEventListener('input', function() {
+            if (!this.value) resetFilters();
+            else filterBookings();
+        });
+
     });
 </script>

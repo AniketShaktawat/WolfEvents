@@ -5,10 +5,12 @@
   <%= @user.email %>
 </p>
 
-<p>
-  <strong>Password:</strong>
-  <%= @user.password %>
-</p>
+<% if !current_user.admin?%>
+  <p>
+    <strong>Password:</strong>
+    <%= @user.password %>
+  </p>
+<% end %>
 
 <p>
   <strong>Name:</strong>

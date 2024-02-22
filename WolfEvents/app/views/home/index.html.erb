@@ -14,9 +14,9 @@
   <%= link_to "My Reviews", my_reviews_path %>&nbsp&nbsp
   <%= link_to "My Bookings", event_tickets_path %>&nbsp&nbsp
   <% if current_user.admin? %>
-    <%= link_to "All Bookings", all_bookings_path %><br><br>
+    <%= link_to "All Bookings", all_bookings_path %>&nbsp&nbsp
+    <%= link_to "Search Attendees by Event name", all_bookings_path %><br><br>
   <% end %>
-
   <%= link_to "My Profile", my_profile_path %><br><br>
   <%= link_to "Logout", logout_path %>
 <% else %>

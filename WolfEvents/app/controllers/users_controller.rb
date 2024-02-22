@@ -56,7 +56,7 @@ class UsersController < ApplicationController
           if current_user && current_user.name == "admin"
             redirect_to users_path, notice: "User was successfully created."
           else
-            redirect_to login_path, notice: "Please log in."
+            redirect_to login_path, notice: "Sign up Successful, Please log in."
           end
         end
         # format.html { redirect_to users_path, notice: "User was successfully created." }
