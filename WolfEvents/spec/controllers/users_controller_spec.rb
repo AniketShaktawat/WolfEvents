@@ -17,8 +17,8 @@ RSpec.describe UsersController, type: :controller do
     {
       email: "invalid_email",
       name: "",
-      phone_number: "123", # Invalid - not 10 digits
-      credit_card: "123", # Invalid - not 16 digits
+      phone_number: "123",
+      credit_card: "123",
       password: "pass",
       password_confirmation: "word"
     }
