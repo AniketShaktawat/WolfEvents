@@ -23,11 +23,6 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    # if current_user.nil?
-    #   redirect_to login_path, notice: "Please Login First."
-    # elsif current_user.name!='admin'
-    #   redirect_to root_path, notice: "Only Admin can create new users."
-    # end
     @user = User.new
   end
 
@@ -83,33 +78,10 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    # @user = User.find(params[:id])
-    #
-    # if @user == current_user
-    #   flash[:error] = "Admin cannot delete themselves."
-    #   redirect_to users_path
-    # elsif current_user.admin?
-    #   @user.destroy
-    #   flash[:success] = "User deleted successfully."
-    #   redirect_to users_path
-    # elsif current_user.name!='admin'
-    # # elsif current_user.name!='admin' && current_user.id == params[:id].to_i
-    #   @user.destroy
-    #   puts "OODD"
-    #   flash[:success] = "User deleted successfully."
-    #   reset_session
-    #   redirect_to root_url
-    # else
-    #   flash[:error] = "You are not authorized to delete this user."
-    #   redirect_to users_path
-    puts "OODD"
     @user.destroy
     if(current_user.name != 'admin' && @user.name != 'admin')
-      puts "OODD111"
       reset_session
     end
-
-    puts "OODD222222"
 
     respond_to do |format|
       format.html { redirect_to users_url, notice: "User was successfully destroyed." }

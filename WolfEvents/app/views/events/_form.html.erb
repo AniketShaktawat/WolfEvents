@@ -64,25 +64,20 @@
 <% end %>
 
 <script>
-    // Assuming turbolinks:load is commented out because it's not being used.
     var dateField = document.getElementById("date");
     var startTimeField = document.getElementById("start_time");
     var endTimeField = document.getElementById("end_time");
     var roomIDSelect = document.getElementById("event_room_id");
 
-    // Function to check if all fields are filled and then fetch available rooms
     function fetchAvailableRooms() {
         console.log("called the function");
         var date = dateField.value;
         var startTime = startTimeField.value;
         var endTime = endTimeField.value;
 
-        // Check if all fields are filled
         if(date && startTime && endTime) {
-            // Build the URL with query parameters
             console.log("called the function1");
             var url = new URL('/rooms/available', window.location.origin);
-            // var url = '/rooms/available'
             console.log("called the function after url");
             var params = { date: date, start_time: startTime, end_time: endTime };
             console.log("called the function after paramas");
@@ -92,22 +87,18 @@
             fetch(url, {
                 method: 'GET',
             })
-                .then(response => response.json()) // Parse JSON response
+                .then(response => response.json())
                 .then(function(response) {
-                    // Clear existing options and add prompt
                     console.log("above responseresponse");
                     console.log(response);
-                    // Clear the dropdown
                     while (roomIDSelect.options.length > 0) {
                         roomIDSelect.remove(0);
                     }
-                    // Add the 'Select a Room' option
                     var option = document.createElement("option");
                     option.value = '';
                     option.text = 'Select a Room';
                     roomIDSelect.appendChild(option);
 
-                    // Populate the dropdown with available rooms
                     response.rooms.forEach(function(room) {
                         var option = document.createElement("option");
                         option.value = room.id;
@@ -121,7 +112,6 @@
         }
     }
 
-    // Add event listeners to the form fields
     dateField.addEventListener("input", fetchAvailableRooms);
     startTimeField.addEventListener("input", fetchAvailableRooms);
     endTimeField.addEventListener("input", fetchAvailableRooms);

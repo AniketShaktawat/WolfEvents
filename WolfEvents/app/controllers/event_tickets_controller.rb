@@ -31,8 +31,8 @@ class EventTicketsController < ApplicationController
     @event = Event.find(params[:event_id])
     if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
-    elsif @event.date < Date.today || (@event.date == Date.today && @event.startTime < Time.now)
-        redirect_to root_url
+    elsif @event.date < Date.today || (@event.date == Date.today && @event.startTime.strftime('%H:%M') < DateTime.now.utc.strftime('%H:%M'))
+        redirect_to root_url, notice: "You cannot buy ticket for past events."
     end
     @event_ticket = EventTicket.new
     @event_ticket.user = current_user

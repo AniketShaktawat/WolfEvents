@@ -25,7 +25,7 @@ class RoomsController < ApplicationController
     if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
     elsif current_user.name!='admin'
-      redirect_to my_profile_path, notice: "You Cannot Access Rooms."
+      redirect_to my_profile_path, notice: "You Cannot Create Rooms."
     end
     @room = Room.new
   end
@@ -76,24 +76,6 @@ class RoomsController < ApplicationController
     end
   end
 
-  # def available
-  #   date = params[:date]
-  #   start_time = params[:startTime]
-  #   end_time = params[:endTime]
-  #
-  #   puts(date)
-  #   puts(start_time)
-  #   puts(end_time)
-  #
-  #   @available_rooms = Room.left_joins(:events)
-  #                          .where.not(events: {id: nil, date: date, start_time: start_time..end_time})
-  #                          .or(Room.left_joins(:events).where(events: {id: nil}))
-  #                          .distinct
-  #
-  #   puts @available_rooms
-  #
-  #   render json: {rooms: @available_rooms.select(:id, :location).as_json}
-  # end
   def available
     date = Date.parse(params[:date])
     startTime = Time.parse(params[:start_time]).strftime('%H:%M')
@@ -121,12 +103,10 @@ class RoomsController < ApplicationController
 
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_room
       @room = Room.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def room_params
       params.require(:room).permit(:location, :capacity)
     end

@@ -106,7 +106,6 @@
         var eventNameFilter = document.getElementById('eventName');
         var clearDateBtn = document.getElementById('clear-date');
 
-        // Add event listeners to each filter element
         function filterEvents() {
             var category = categoryFilter.value;
             var date = dateFilter.value;
@@ -118,7 +117,7 @@
                 alert('The minimum price should not be greater than the maximum price.');
                 minPriceFilter.value = '';
                 maxPriceFilter.value = '';
-                return; // Stop the function from proceeding further
+                return;
             }
 
             console.log("FilterEvent Function is Called")
@@ -129,22 +128,16 @@
                 var eventCategory = eventItem.getAttribute('data-category');
                 var eventDate = eventItem.getAttribute('data-date');
                 var eventPrice = parseFloat(eventItem.getAttribute('data-price'));
-                // var eventName = eventItem.textContent.trim();
                 var eventNameData = eventItem.getAttribute('data-eventname').toLowerCase();
 
-                // console.log("Event Category:", eventCategory);
                 console.log("Event Date:", eventDate);
-                // console.log("Event Price:", eventPrice);
 
                 var categoryMatch = !category || category === eventCategory;
                 var dateMatch = !date || date === eventDate;
                 var priceMatch = (!minPrice || eventPrice >= minPrice) && (!maxPrice || eventPrice <= maxPrice);
-                // var nameMatch = !eventName || eventNameData.includes(eventName);
                 var nameMatch = !eventName || eventNameData.startsWith(eventName.toLowerCase());
 
                 eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? 'table-row' : 'none';
-                // eventItem.style.display = (categoryMatch && dateMatch && priceMatch && nameMatch) ? '' : 'none';
-                // resetFilters();
 
             });
         }
@@ -155,7 +148,7 @@
             dateFilter.value = '';
             minPriceFilter.value = '';
             maxPriceFilter.value = '';
-            filterEvents(); // Call filterEvents to update the display
+            filterEvents();
         }
 
         eventNameFilter.addEventListener('input', function() {

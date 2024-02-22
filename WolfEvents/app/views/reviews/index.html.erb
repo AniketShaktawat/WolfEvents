@@ -61,23 +61,22 @@
 
 
         function filterReviews() {
-            var event_name = eventName.value;
-            var Email = email.value;
+            var event_name = eventName.value.toLowerCase();
+            var Email = email.value.toLowerCase();
 
             console.log("FilterReviews Function is Called")
 
             var reviewItems = document.querySelectorAll('.review-item');
 
             reviewItems.forEach(function(reviewItem) {
-                var event_name1 = reviewItem.getAttribute('data-eventName');
-                var Email1 = reviewItem.getAttribute('data-email');
+                var event_name1 = reviewItem.getAttribute('data-eventName').toLowerCase();
+                var Email1 = reviewItem.getAttribute('data-email').toLowerCase();
 
 
-                var eventMatch = !event_name || event_name === event_name1;
-                var emailMatch = !Email || Email === Email1;
+                var eventMatch = !eventName || event_name1.startsWith(event_name.toLowerCase());
+                var emailMatch = !Email || Email1.startsWith(Email.toLowerCase());
 
-
-                reviewItem.style.display = (eventMatch && emailMatch) ? 'block' : 'none';
+                reviewItem.style.display = (eventMatch && emailMatch) ? 'table-row' : 'none';
             });
         }
 
@@ -89,6 +88,5 @@
 
 
 <br>
-<%#= link_to 'New Review', new_review_path%>
 <%= link_to 'Home Page', root_path %>
 <%= link_to "Logout", logout_path %>

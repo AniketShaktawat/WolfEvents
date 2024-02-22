@@ -20,16 +20,13 @@
 <div id="other_user_field" style="display: none;">
   <div class="field">
     <%= form.label :purchased_for_user_id, "Select User" %>
-    <%= form.select :purchased_for_user_id, 
-        # options_from_collection_for_select(User.where.not(id: current_user.id).where(is_admin: false), :id, :name),
+    <%= form.select :purchased_for_user_id,
         options_from_collection_for_select(User.where.not(id: current_user.id), :id, :name),
         {prompt: "Select User"},
         id: 'purchased_for_user_select' 
     %>
 </div>
 </div>
-
-
 
 
 <!--  <div class="field">-->
@@ -61,21 +58,6 @@
     <%= form.submit %>
   </div>
 <% end %>
-
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function() {-->
-<!--        var ticketPrice = <%#= @event.ticketPrice %>;-->
-<!--        var numberInput = document.getElementById('number_of_tickets');-->
-<!--        var totalPriceInput = document.getElementById('total_price');-->
-
-<!--        numberInput.addEventListener('input', function() {-->
-<!--            var numberOfTickets = parseInt(numberInput.value);-->
-<!--            var totalPrice = ticketPrice * numberOfTickets;-->
-<!--            totalPriceInput.value = isNaN(totalPrice) ? '' : totalPrice.toFixed(2); // Display total price with 2 decimal places-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

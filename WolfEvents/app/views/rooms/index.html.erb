@@ -18,7 +18,6 @@
         <td><%= room.capacity %></td>
         <% if current_user.name == "admin" %>
           <td><%= link_to 'Edit', edit_room_path(room) %></td>
-<!--          <td><%#= link_to 'Delete', destroy_room_path(room) %></td>-->
           <td><%= button_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>

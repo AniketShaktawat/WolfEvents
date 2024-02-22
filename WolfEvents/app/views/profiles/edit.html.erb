@@ -18,7 +18,7 @@
     <% if !current_user.admin? %>
       <tr>
         <td>Password:</td>
-        <td><%= f.text_field :password %></td>
+        <td><%= f.password_field :password %></td>
       </tr>
     <% end %>
     <tr>
@@ -46,9 +46,7 @@
   <%= f.submit "Update Profile" %>
 <% end %>
 <% if current_user.name != 'admin' %>
-<!--  <%#= button_to "Delete My Profile", delete_profile_path(@user) %><br><br>-->
   <%= button_to "Delete My Profile", delete_profile_path(@user_id), method: :delete, data: { confirm: "Are you sure?" } %>
-  <!--  <td><%#= button_to 'Delete My Profile', @user, method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
 <% end %>
 <%= link_to 'Home Page', root_path %>
 <%= link_to "Logout", logout_path %>

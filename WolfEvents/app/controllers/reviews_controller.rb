@@ -9,26 +9,31 @@ class ReviewsController < ApplicationController
     @reviews = Review.all
     @events = Event.all
     @users = User.all
-    # @event = Event.find(params[:event_id])
   end
 
   # GET /reviews/1 or /reviews/1.json
   def show
-    if current_user==nil
+    if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
+      return
     end
   end
 
   # GET /reviews/new
   def new
-    @event = Event.find(params[:event_id])
     if current_user.nil?
       redirect_to login_path, notice: "Please Login First."
+      return
     end
-    # if !current_user.name=='admin'
-    #   redirect_to root_path, notice: "Add reviews in My bookings Section"
-    # end
-
+    if params[:event_id].nil? || params[:event_ticket_id].nil?
+      redirect_to root_path, notice: "Add reviews in My bookings Section"
+      return
+    end
+    @event = Event.find(params[:event_id])
+    if @event.date > Date.today || (@event.date == Date.today && @event.startTime.strftime('%H:%M') > DateTime.now.utc.strftime('%H:%M'))
+      redirect_to root_url, notice: "You cannot add reviews for future events."
+      return
+    end
     @review = Review.new
   end
 
@@ -41,8 +46,6 @@ class ReviewsController < ApplicationController
     elsif current_user.name!='admin' && current_user.id !=@review.user_id
       redirect_to root_path, notice: "You Cannot Edit Other reviews."
     end
-    # @review = Review.find(params[:id])
-    # @event = @review.event
   end
 
   # POST /reviews or /reviews.json
@@ -51,7 +54,7 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     puts("params are these #{review_params}")
     @review.user = current_user
-    @event = Event.find(@review.event_id) # Retrieve the event using the event ID
+    @event = Event.find(@review.event_id)
     @review.event = @event
 
 
@@ -93,22 +96,10 @@ class ReviewsController < ApplicationController
 
 
   def my_reviews
-    puts("inside review controller")
-    # @review = Review.new(review_params)
-    # puts("params are these #{review_params}")
-    # @review.user = current_user
-    # @event = Event.find(@review.event_id) # Retrieve the event using the event ID
-    # @review.event = @event
-
     @reviews = Review.all
     @events = Event.all
     @user = current_user
-
   end
-
-
-
-
 
 
 

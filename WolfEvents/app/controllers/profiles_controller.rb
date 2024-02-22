@@ -23,20 +23,13 @@ class ProfilesController < ApplicationController
         @user.destroy
       end
       if(current_user.name != 'admin' && @user.name != 'admin')
-        puts "OODD111"
         reset_session
       end
-
-      puts "OODD222222"
 
       respond_to do |format|
         format.html { redirect_to users_url, notice: "User was successfully destroyed." }
         format.json { head :no_content }
       end
-        # user = current_user # Or however you get the user to be deleted
-        # user.destroy
-        # reset_session if user.name != 'admin'
-        # redirect_to users_url, notice: "User was successfully destroyed."
     end
     
 
