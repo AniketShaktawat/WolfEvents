@@ -4,7 +4,7 @@
 WolfEvents is an Event Management System that serves as a comprehensive event ticketing platform. Users can browse and reserve event tickets, submit reviews, and maintain their profiles. Admin privileges encompass overseeing events, attendees, tickets, and reviews. This README provides essential information for navigating the application, including admin login credentials, system testing procedures, and utilization guidelines.
 
 ### Ruby Versions
-This project utilizes Ruby version 3.3.2 and Rails version 6.1.7.
+This project utilizes Ruby version 3.3.0 and Rails version 6.1.7.
 
 ### Deployment
 The application is deployed on NCSU VCL and can be accessed at: [WolfEvents](http://152.7.177.47:8080/)
