@@ -30,7 +30,7 @@ class ReviewsController < ApplicationController
       return
     end
     @event = Event.find(params[:event_id])
-    if @event.date > Date.today || (@event.date == Date.today && @event.startTime.strftime('%H:%M') > DateTime.now.utc.strftime('%H:%M'))
+    if @event.date > DateTime.now.utc.to_date || (@event.date == DateTime.now.utc.to_date && @event.startTime.strftime('%H:%M') > DateTime.now.utc.strftime('%H:%M'))
       redirect_to root_url, notice: "You cannot add reviews for future events."
       return
     end
